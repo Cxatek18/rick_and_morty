@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.RickAndMortySplashScreen" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/tertiary</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_rm_splash_screen</item>
-        <item name="postSplashScreenTheme">@style/Theme.Rick_and_morty</item>
+    <style name="Theme.Rick_and_morty" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/tertiary</item>
+        <item name="colorSecondary">@color/tertiary</item>
     </style>
 
-    <style name="Theme.Rick_and_morty" parent="android:Theme.Material.NoActionBar" />
+    <style name="Theme.RickAndMortySplashScreen" parent="Theme.SplashScreen">
+        <item name="postSplashScreenTheme">@style/Theme.Rick_and_morty</item>
+        <item name="windowSplashScreenBackground">@color/tertiary</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_rm_splash_screen</item>
+    </style>
 </resources>

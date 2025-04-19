@@ -87,4 +87,16 @@ dependencies {
 
     // Splash API
     implementation(libs.androidx.core.splashscreen)
+
+    // Retrofit
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.retrofit.adapter.rxjava)
+
+    // Okhttp3
+    implementation(libs.okhttp3.core)
+    implementation(libs.okhttp3.logging.interceptor)
+
+    // Coil compose
+    implementation(libs.coil.compose)
 }

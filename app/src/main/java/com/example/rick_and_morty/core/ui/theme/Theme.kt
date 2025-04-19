@@ -14,20 +14,22 @@ private val DarkColorScheme = darkColorScheme(
     primary = PrimaryDark,
     secondary = SecondaryDark,
     tertiary = Tertiary,
-    surface = Surface
+    surfaceVariant = SurfaceVariant,
+    onSurfaceVariant = OnSurfaceVariant
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = PrimaryLight,
     secondary = SecondaryLight,
     tertiary = Tertiary,
-    surface = Surface
+    surfaceVariant = SurfaceVariant,
+    onSurfaceVariant = OnSurfaceVariant
 )
 
 @Composable
 fun Rick_and_mortyTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
