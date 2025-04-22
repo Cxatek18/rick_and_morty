@@ -1,6 +1,6 @@
 package com.example.rick_and_morty.data.remote.network
 
-import com.example.rick_and_morty.data.remote.model.characters.CharacterListInApi
+import com.example.rick_and_morty.data.remote.model.characters.CharacterListInResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -12,6 +12,5 @@ interface ApiService {
         "Accept: application/json",
         "Content-Type: application/json"
     )
-    suspend fun getListCharacter(
-    ): Response<CharacterListInApi>
+    suspend fun getListCharacter(): Response<CharacterListInResponse>
 }

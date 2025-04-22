@@ -10,34 +10,35 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.rick_and_morty.R
-import com.example.rick_and_morty.presentation.screens.characters_list.CharactersListScreen
-import com.example.rick_and_morty.presentation.screens.characters_list.CharactersListScreenViewModel
+import com.example.rick_and_morty.presentation.screens.characters_list.CharactersListManagement
+import com.example.rick_and_morty.presentation.screens.characters_list.view_model.CharactersListManagementViewModel
 import kotlinx.serialization.Serializable
 
 @Serializable
 object HomeGraph
 
 @Serializable
-object CharacterListDestination
+object CharactersListManagementDestination
 
 fun NavGraphBuilder.homeGraph(
     modifier: Modifier,
     changeNameTopBar: (nameTopBar: String) -> Unit
 ) {
-    navigation<HomeGraph>(startDestination = CharacterListDestination) {
-        composable<CharacterListDestination> {
-            val viewModel: CharactersListScreenViewModel = hiltViewModel()
+    navigation<HomeGraph>(startDestination = CharactersListManagementDestination) {
+        composable<CharactersListManagementDestination> {
+            val viewModel: CharactersListManagementViewModel = hiltViewModel()
             val state by viewModel.state.collectAsStateWithLifecycle()
-            CharactersListScreen(
+            CharactersListManagement(
                 modifier = modifier,
                 state = state,
                 viewModel = viewModel
             )
             changeNameTopBar(stringResource(R.string.text_top_bar_home))
+
         }
     }
 }
 
-fun NavHostController.navigateToListCharacter() {
-    navigate(CharacterListDestination)
+fun NavHostController.navigateToCharactersListManagement() {
+    navigate(CharactersListManagementDestination)
 }

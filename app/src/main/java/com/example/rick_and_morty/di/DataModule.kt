@@ -1,5 +1,6 @@
 package com.example.rick_and_morty.di
 
+import com.example.rick_and_morty.BuildConfig
 import com.example.rick_and_morty.data.remote.network.ApiService
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -16,7 +17,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 class DataModule {
 
     @Provides
-    fun provideApiService(): ApiService {
+    fun provideBaseUrl(): String = BuildConfig.API_BASE_URL
+
+    @Provides
+    fun provideApiService(
+        baseApiUrl: String
+    ): ApiService {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         val client = OkHttpClient.Builder()
@@ -27,7 +33,7 @@ class DataModule {
             .serializeNulls()
             .create()
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://rickandmortyapi.com/api/")
+            .baseUrl(baseApiUrl)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()

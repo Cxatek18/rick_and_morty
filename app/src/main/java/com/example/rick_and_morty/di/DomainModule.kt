@@ -1,8 +1,9 @@
 package com.example.rick_and_morty.di
 
+import com.example.rick_and_morty.data.remote.mappers.characters.CharacterListManagementMappers
 import com.example.rick_and_morty.data.remote.network.ApiService
 import com.example.rick_and_morty.data.repository.characters.CharactersRepositoryImpl
-import com.example.rick_and_morty.domain.repository.characters.CharactersRepository
+import com.example.rick_and_morty.domain.repository.characters.ICharactersRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,10 +17,12 @@ class DomainModule {
     @Provides
     @Singleton
     fun provideCharactersRepository(
-        apiService: ApiService
-    ): CharactersRepository {
+        apiService: ApiService,
+        characterMappers: CharacterListManagementMappers
+    ): ICharactersRepository {
         return CharactersRepositoryImpl(
-            apiService = apiService
+            apiService = apiService,
+            characterMappers
         )
     }
     // Repository

@@ -7,7 +7,7 @@
     <string name="text_character_status_unknown">unknown</string>
 
 
-    <string name="text_error_unknown">Неизвестная ошибка, напишите нам и мы её решим в ближайшее время</string>
+    <string name="text_error_unknown">Неизвестная ошибка, напишите нам и мы её решим в ближайшее время, код: %s</string>
     <string name="text_error_null_type">Опа null type</string>
     <string name="text_error_system">Ошибка системы</string>
     <string name="text_error_http">Сервер сломался</string>

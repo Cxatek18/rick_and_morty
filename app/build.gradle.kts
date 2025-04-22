@@ -1,3 +1,7 @@
+@file:Suppress("UNUSED_EXPRESSION")
+
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,6 +9,12 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt)
+}
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
 }
 
 android {
@@ -22,6 +32,16 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField(
+            "String",
+            "API_BASE_URL",
+            "${localProperties.getProperty("API_BASE_URL", "")}"
+        )
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
