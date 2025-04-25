@@ -119,4 +119,11 @@ dependencies {
 
     // Coil compose
     implementation(libs.coil.compose)
+
+    // Testing
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine.test)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.navigation.testing)
 }

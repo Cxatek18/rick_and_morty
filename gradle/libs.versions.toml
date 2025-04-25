@@ -17,6 +17,11 @@ androidxCoreSplashscreenVersion = "1.0.1"
 retrofitVersion = "2.9.0"
 okhttp3Version = "4.12.0"
 coilComposeVersion = "2.7.0"
+kotlinxCoroutinesTestVersion = "2.7.0"
+turbineTestVersion = "1.1.0"
+mockitoKotlinTestVersion = "5.2.0"
+hiltAndroidTestVersion = "2.51.1"
+navigationTestingVersion = "2.8.9"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,6 +59,13 @@ okhttp3-core = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = 
 okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3Version" }
 
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilComposeVersion" }
+
+
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTestVersion" }
+turbine-test = { group = "app.cash.turbine", name = "turbine", version.ref = "turbineTestVersion" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlinTestVersion" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hiltAndroidTestVersion" }
+navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigationTestingVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
