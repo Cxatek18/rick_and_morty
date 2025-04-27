@@ -1,3 +1,7 @@
+@file:Suppress("UNUSED_EXPRESSION")
+
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,6 +9,12 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt)
+}
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
 }
 
 android {
@@ -22,6 +32,16 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField(
+            "String",
+            "API_BASE_URL",
+            "${localProperties.getProperty("API_BASE_URL", "")}"
+        )
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -87,4 +107,23 @@ dependencies {
 
     // Splash API
     implementation(libs.androidx.core.splashscreen)
+
+    // Retrofit
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.retrofit.adapter.rxjava)
+
+    // Okhttp3
+    implementation(libs.okhttp3.core)
+    implementation(libs.okhttp3.logging.interceptor)
+
+    // Coil compose
+    implementation(libs.coil.compose)
+
+    // Testing
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine.test)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.navigation.testing)
 }

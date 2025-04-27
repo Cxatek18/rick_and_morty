@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">rick_and_morty</string>
+    <string name="cd_image_character">image character</string>
+
+    <string name="text_character_status_alive">Alive</string>
+    <string name="text_character_status_dead">Dead</string>
+    <string name="text_character_status_unknown">unknown</string>
+
+
+    <string name="text_error_unknown">Неизвестная ошибка, напишите нам и мы её решим в ближайшее время, код: %s</string>
+    <string name="text_error_null_type">Опа null type</string>
+    <string name="text_error_system">Ошибка системы</string>
+    <string name="text_error_http">Сервер сломался</string>
+    <string name="text_error_network">Не можем получить данные</string>
+
+    <string name="text_top_bar_home">Home</string>
+
+
+    <string name="text_bottom_bar_home">Home</string>
+    <string name="text_bottom_bar_episodes">Episodes</string>
+    <string name="text_bottom_bar_search">Search</string>
 </resources>

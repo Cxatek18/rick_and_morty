@@ -12,4 +12,5 @@ val SecondaryDark = Color(0xFFEAE9E9)
 
 // General Theme Color
 val Tertiary = Color(0xFF95DFF3)
-val Surface = Color(0xFF51E54A)
+val SurfaceVariant = Color(0xFF51E54A)
+val OnSurfaceVariant = Color(0xFFEC0F0F)
