@@ -2,6 +2,7 @@ package com.example.rick_and_morty.core.ui.components.characters
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,9 +40,11 @@ import com.example.rick_and_morty.core.ui.theme.size_width_card
 @Composable
 fun CharactersCard(
     modifier: Modifier = Modifier,
+    characterID: Int,
     imageCharacter: String,
     nameCharacter: String,
-    statusCharacter: String
+    statusCharacter: String,
+    onClickCharacter: (characterID: Int) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -60,6 +63,9 @@ fun CharactersCard(
                     size = rounded20
                 )
             )
+            .clickable {
+                onClickCharacter(characterID)
+            }
     ) {
         Box(
             modifier = Modifier
@@ -125,9 +131,11 @@ fun CharactersCard(
 private fun PreviewCharactersCard() {
     Rick_and_mortyTheme(darkTheme = false, dynamicColor = false) {
         CharactersCard(
+            characterID = 1,
             imageCharacter = "facilis",
             nameCharacter = "Damian Sherman",
-            statusCharacter = "Dead"
+            statusCharacter = "Dead",
+            onClickCharacter = {}
         )
     }
 }

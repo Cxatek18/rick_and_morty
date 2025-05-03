@@ -22,6 +22,7 @@ turbineTestVersion = "1.1.0"
 mockitoKotlinTestVersion = "5.2.0"
 hiltAndroidTestVersion = "2.51.1"
 navigationTestingVersion = "2.8.9"
+core = "1.48.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -66,6 +67,7 @@ turbine-test = { group = "app.cash.turbine", name = "turbine", version.ref = "tu
 mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlinTestVersion" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hiltAndroidTestVersion" }
 navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigationTestingVersion" }
+core = { group = "com.google.ar", name = "core", version.ref = "core" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
