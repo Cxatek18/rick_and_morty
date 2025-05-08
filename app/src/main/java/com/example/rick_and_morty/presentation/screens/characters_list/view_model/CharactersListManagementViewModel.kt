@@ -1,17 +1,16 @@
 package com.example.rick_and_morty.presentation.screens.characters_list.view_model
 
 import android.annotation.SuppressLint
-import android.content.Context
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rick_and_morty.R
+import com.example.rick_and_morty.core.ui.utils.AndroidResourceResolver
+import com.example.rick_and_morty.core.ui.utils.Resource
 import com.example.rick_and_morty.domain.interactor.characters.CharactersListManagementInteractor
 import com.example.rick_and_morty.domain.module.error_handler.ApiResult
-import com.example.rick_and_morty.domain.module.error_handler.ErrorType
+import com.example.rick_and_morty.domain.module.error_handler.getStringSystemErrorError
 import com.example.rick_and_morty.presentation.screens.characters_list.state.CharactersListManagementState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharactersListManagementViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
+    private val resolver: AndroidResourceResolver,
     private val charactersListManagementInteractor: CharactersListManagementInteractor
 ) : ViewModel() {
 
@@ -43,34 +42,20 @@ class CharactersListManagementViewModel @Inject constructor(
             charactersListManagementInteractor.getListAllCharacters()
                 .catch {
                     CharactersListManagementState.Error(
-                        errorText = context.getString(R.string.text_error_system),
+                        errorText = resolver.resolve(Resource.String(R.string.text_error_system)),
                     )
                 }
                 .collect { result ->
                     when (result) {
                         is ApiResult.Error -> {
-                            val errorText = when(result.type) {
-                                ErrorType.NETWORK -> context.getString(R.string.text_error_network)
-                                ErrorType.HTTP -> context.getString(R.string.text_error_http)
-                                ErrorType.SYSTEM -> context.getString(R.string.text_error_system)
-                                ErrorType.NULL_TYPE -> context.getString(R.string.text_error_null_type)
-                                ErrorType.UNKNOWN -> {
-                                    String.format(
-                                        context.getString(R.string.text_error_unknown),
-                                        result.code
-                                    )
-                                }
-
-                                else -> {
-                                    String.format(
-                                        context.getString(R.string.text_error_unknown),
-                                        result.code
-                                    )
-                                }
+                            val systemErrorText = result.type.getStringSystemErrorError(resolver)
+                            if (systemErrorText != null) {
+                                _state.value = CharactersListManagementState.Error(
+                                    errorText = systemErrorText
+                                )
+                            } else {
+                                // Тут как раз можем уже обработать те исключения которые нам отдал бэк по запрсоу
                             }
-                            _state.value = CharactersListManagementState.Error(
-                                errorText = errorText
-                            )
                         }
 
                         is ApiResult.Success -> {
