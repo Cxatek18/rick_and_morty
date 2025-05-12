@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.rick_and_morty.core.ui.components.characters.CharactersErrorScreen
@@ -20,6 +21,11 @@ fun CharactersListManagement(
     viewModel: CharactersListManagementViewModel,
     onClickCharacter: (characterID: Int) -> Unit
 ) {
+
+    LaunchedEffect(Unit) {
+        viewModel.getListAllCharacters()
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()

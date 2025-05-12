@@ -1,6 +1,5 @@
 package com.example.rick_and_morty.presentation.screens.character_detail
 
-import android.widget.Space
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -88,7 +87,10 @@ fun CharacterDetailManagementSuccessScreen(
                 .padding(vertical = padding_3, horizontal = padding_16)
         ) {
             Text(
-                text = "Status: ${character.status}",
+                text = String.format(
+                    stringResource(R.string.text_error_null_type),
+                    character.status
+                ),
                 color = MaterialTheme.colorScheme.secondary,
                 fontSize = font_size_12,
                 fontWeight = FontWeight.W400,

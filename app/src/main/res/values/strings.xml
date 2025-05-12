@@ -13,6 +13,8 @@
     <string name="text_error_http">Сервер сломался</string>
     <string name="text_error_network">Не можем получить данные</string>
 
+    <string name="text_error_in_server">error_in_server</string>
+
     <string name="text_top_bar_home">Home</string>
     <string name="text_top_bar_detail_character">Character Detail</string>
 
@@ -28,6 +30,8 @@
     <string name="text_character_parameter_type">Type</string>
     <string name="text_character_parameter_origin">Origin</string>
     <string name="text_character_parameter_episode_count">Episode count</string>
+
+    <string name="text_status_character_detail">Status: %s</string>
 
     <string name="text_btn_view_all_episodes">View all episodes</string>
 

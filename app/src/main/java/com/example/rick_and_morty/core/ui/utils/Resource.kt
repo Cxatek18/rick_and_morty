@@ -1,34 +1,20 @@
 package com.example.rick_and_morty.core.ui.utils
 
 import android.content.Context
-import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-sealed interface Resource<out T> {
+interface IResourceService {
 
-    @JvmInline
-    value class String(@StringRes val resId: Int) : Resource<kotlin.String>
-
-    @JvmInline
-    value class Color(@ColorRes val resId: Int) : Resource<Int>
+    fun getString(@StringRes resId: Int): String
 }
 
-interface ResourceResolver {
+class ResourcesService @Inject constructor(
+    @ApplicationContext private val context: Context
+) : IResourceService {
 
-    fun <T: Any> resolve(resource: Resource<T>): T
-}
+    private val resources = context.resources
 
-class AndroidResourceResolver(private val context: Context): ResourceResolver {
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> resolve(resource: Resource<T>): T = when (resource) {
-        is Resource.String -> context.getString(resource.resId) as T
-        is Resource.Color -> context.getColor(resource.resId) as T
-    }
-}
-
-@Suppress("UNCHECKED_CAST")
-fun <T: Any> Context.resolve(resource: Resource<T>): T = when(resource) {
-    is Resource.String -> getString(resource.resId) as T
-    is Resource.Color -> getColor(resource.resId) as T
+    override fun getString(resId: Int): String = resources.getString(resId)
 }

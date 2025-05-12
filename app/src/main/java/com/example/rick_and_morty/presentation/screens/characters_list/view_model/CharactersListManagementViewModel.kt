@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rick_and_morty.R
-import com.example.rick_and_morty.core.ui.utils.AndroidResourceResolver
-import com.example.rick_and_morty.core.ui.utils.Resource
-import com.example.rick_and_morty.domain.interactor.characters.CharactersListManagementInteractor
+import com.example.rick_and_morty.core.ui.utils.IResourceService
+import com.example.rick_and_morty.domain.interactor.characters.ICharactersListManagementInteractor
 import com.example.rick_and_morty.domain.module.error_handler.ApiResult
-import com.example.rick_and_morty.domain.module.error_handler.getStringSystemErrorError
+import com.example.rick_and_morty.domain.module.error_handler.getStringSystemError
 import com.example.rick_and_morty.presentation.screens.characters_list.state.CharactersListManagementState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,8 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharactersListManagementViewModel @Inject constructor(
-    private val resolver: AndroidResourceResolver,
-    private val charactersListManagementInteractor: CharactersListManagementInteractor
+    private val resolver: IResourceService,
+    private val charactersListManagementInteractor: ICharactersListManagementInteractor
 ) : ViewModel() {
 
     private var _state = MutableStateFlow<CharactersListManagementState>(
@@ -30,26 +30,23 @@ class CharactersListManagementViewModel @Inject constructor(
     )
     val state: StateFlow<CharactersListManagementState> = _state.asStateFlow()
 
-    init {
-        getListAllCharacters()
-    }
 
     @SuppressLint("StringFormatMatches")
-    private fun getListAllCharacters() {
-        viewModelScope.launch {
+    fun getListAllCharacters() {
+        viewModelScope.launch(Dispatchers.IO) {
             _state.value = CharactersListManagementState.Loading
             delay(timeMillis = 1000)
             charactersListManagementInteractor.getListAllCharacters()
                 .catch {
                     CharactersListManagementState.Error(
-                        errorText = resolver.resolve(Resource.String(R.string.text_error_system)),
+                        errorText = resolver.getString(R.string.text_error_system),
                     )
                 }
                 .collect { result ->
                     when (result) {
                         is ApiResult.Error -> {
-                            val systemErrorText = result.type.getStringSystemErrorError(resolver)
-                            if (systemErrorText != null) {
+                            val systemErrorText = result.type.getStringSystemError(resolver)
+                            if (systemErrorText != resolver.getString(R.string.text_error_in_server)) {
                                 _state.value = CharactersListManagementState.Error(
                                     errorText = systemErrorText
                                 )
