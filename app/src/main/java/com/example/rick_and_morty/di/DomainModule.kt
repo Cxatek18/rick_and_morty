@@ -1,38 +1,29 @@
 package com.example.rick_and_morty.di
 
-import com.example.rick_and_morty.data.remote.network.ApiService
 import com.example.rick_and_morty.data.repository.character.CharacterDetailRepositoryImpl
 import com.example.rick_and_morty.data.repository.characters.CharactersRepositoryImpl
 import com.example.rick_and_morty.domain.repository.character.ICharacterDetailRepository
 import com.example.rick_and_morty.domain.repository.characters.ICharactersRepository
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DomainModule {
+interface DomainModule {
     // Repository
-    @Provides
+    @Binds
     @Singleton
-    fun provideCharactersRepository(
-        apiService: ApiService
-    ): ICharactersRepository {
-        return CharactersRepositoryImpl(
-            apiService = apiService
-        )
-    }
+    fun bindCharactersRepository(
+        impl: CharactersRepositoryImpl
+    ): ICharactersRepository
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideCharacterDetailRepository(
-        apiService: ApiService
-    ): ICharacterDetailRepository {
-        return CharacterDetailRepositoryImpl(
-            apiService = apiService
-        )
-    }
+    fun bindCharacterDetailRepository(
+        impl: CharacterDetailRepositoryImpl
+    ): ICharacterDetailRepository
     // Repository
 }

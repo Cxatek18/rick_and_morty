@@ -16,15 +16,15 @@ import dagger.hilt.components.SingletonComponent
 interface PresentationModule {
 
     @Binds
-    fun provideResourceService(impl: ResourcesService): IResourceService
+    fun bindResourceService(impl: ResourcesService): IResourceService
 
     @Binds
-    fun provideCharacterDetailManagementInteractor(
+    fun bindCharacterDetailManagementInteractor(
         impl: CharacterDetailManagementInteractor
     ): ICharacterDetailManagementInteractor
 
     @Binds
-    fun provideCharactersListManagementInteractor(
+    fun bindCharactersListManagementInteractor(
         impl: CharactersListManagementInteractor
     ): ICharactersListManagementInteractor
 }

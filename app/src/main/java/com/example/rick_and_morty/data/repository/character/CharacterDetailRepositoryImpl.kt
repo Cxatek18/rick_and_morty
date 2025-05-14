@@ -8,8 +8,9 @@ import com.example.rick_and_morty.domain.module.error_handler.ApiResult
 import com.example.rick_and_morty.domain.repository.character.ICharacterDetailRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class CharacterDetailRepositoryImpl(
+class CharacterDetailRepositoryImpl @Inject constructor(
     private val apiService: ApiService
 ): ICharacterDetailRepository {
 
