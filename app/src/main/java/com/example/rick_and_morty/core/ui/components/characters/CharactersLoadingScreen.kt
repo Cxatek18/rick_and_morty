@@ -1,4 +1,4 @@
-package com.example.rick_and_morty.presentation.screens.characters_list
+package com.example.rick_and_morty.core.ui.components.characters
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +13,7 @@ import com.example.rick_and_morty.core.ui.theme.size_40
 import com.example.rick_and_morty.core.ui.theme.size_border_card_2
 
 @Composable
-fun CharactersListManagementLoadingScreen() {
+fun CharactersLoadingScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize(),

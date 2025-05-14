@@ -1,5 +1,8 @@
 package com.example.rick_and_morty.domain.module.error_handler
 
+import com.example.rick_and_morty.R
+import com.example.rick_and_morty.core.ui.utils.IResourceService
+
 enum class ErrorType(
     val code: Int
 ) {
@@ -23,4 +26,23 @@ enum class ErrorType(
     ERROR_SERVER_503(503),
     ERROR_SERVER_504(504),
     ERROR_SERVER_505(505),
+}
+
+fun ErrorType.getStringSystemError(resolver: IResourceService): String {
+    return when (this) {
+        ErrorType.NETWORK -> resolver.getString(R.string.text_error_network)
+        ErrorType.HTTP -> resolver.getString(R.string.text_error_http)
+        ErrorType.SYSTEM -> resolver.getString(R.string.text_error_system)
+        ErrorType.NULL_TYPE -> resolver.getString(R.string.text_error_null_type)
+        ErrorType.UNKNOWN -> {
+            String.format(
+                resolver.getString(R.string.text_error_unknown),
+                this.code
+            )
+        }
+
+        else -> {
+            resolver.getString(R.string.text_error_in_server)
+        }
+    }
 }

@@ -17,7 +17,8 @@ import com.example.rick_and_morty.domain.module.characters.CharacterItemModel
 
 @Composable
 fun CharactersListManagementSuccessScreen(
-    characters: List<CharacterItemModel>
+    characters: List<CharacterItemModel>,
+    onClickCharacter: (characterID: Int) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = Modifier
@@ -28,9 +29,13 @@ fun CharactersListManagementSuccessScreen(
     ) {
         items(characters) { character ->
             CharactersCard(
+                characterID = character.id,
                 imageCharacter = character.image,
                 nameCharacter = character.name,
-                statusCharacter = character.status.statusName
+                statusCharacter = character.status,
+                onClickCharacter = {
+                    onClickCharacter(it)
+                }
             )
         }
     }

@@ -10,6 +10,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.rick_and_morty.R
+import com.example.rick_and_morty.presentation.screens.character_detail.navigation.CharacterDetailDestination
+import com.example.rick_and_morty.presentation.screens.character_detail.navigation.characterDetail
+import com.example.rick_and_morty.presentation.screens.character_detail.view_model.CharacterDetailManagementViewModel
 import com.example.rick_and_morty.presentation.screens.characters_list.CharactersListManagement
 import com.example.rick_and_morty.presentation.screens.characters_list.view_model.CharactersListManagementViewModel
 import kotlinx.serialization.Serializable
@@ -21,24 +24,54 @@ object HomeGraph
 object CharactersListManagementDestination
 
 fun NavGraphBuilder.homeGraph(
-    modifier: Modifier,
-    changeNameTopBar: (nameTopBar: String) -> Unit
+    modifier: Modifier = Modifier,
+    changeNameTopBar: (nameTopBar: String) -> Unit,
+    changeIsVisibleBackIcon: (isVisible: Boolean) -> Unit,
+    navigateToDetail: (Int) -> Unit
 ) {
     navigation<HomeGraph>(startDestination = CharactersListManagementDestination) {
-        composable<CharactersListManagementDestination> {
-            val viewModel: CharactersListManagementViewModel = hiltViewModel()
-            val state by viewModel.state.collectAsStateWithLifecycle()
-            CharactersListManagement(
-                modifier = modifier,
-                state = state,
-                viewModel = viewModel
-            )
-            changeNameTopBar(stringResource(R.string.text_top_bar_home))
-
-        }
+        characterList(
+            modifier = modifier,
+            changeNameTopBar = {
+                changeNameTopBar(it)
+            },
+            navigateToDetail = {
+                navigateToDetail(it)
+            },
+            changeIsVisibleBackIcon = {
+                changeIsVisibleBackIcon(it)
+            }
+        )
+        characterDetail(
+            modifier = modifier,
+            changeNameTopBar = {
+                changeNameTopBar(it)
+            },
+            changeIsVisibleBackIcon = {
+                changeIsVisibleBackIcon(it)
+            }
+        )
     }
 }
 
-fun NavHostController.navigateToCharactersListManagement() {
-    navigate(CharactersListManagementDestination)
+fun NavGraphBuilder.characterList(
+    modifier: Modifier = Modifier,
+    changeNameTopBar: (nameTopBar: String) -> Unit,
+    changeIsVisibleBackIcon: (isVisible: Boolean) -> Unit,
+    navigateToDetail: (Int) -> Unit
+) {
+    composable<CharactersListManagementDestination> {
+        val viewModel: CharactersListManagementViewModel = hiltViewModel()
+        val state by viewModel.state.collectAsStateWithLifecycle()
+        CharactersListManagement(
+            modifier = modifier,
+            state = state,
+            viewModel = viewModel,
+            onClickCharacter = {
+                navigateToDetail(it)
+            }
+        )
+        changeNameTopBar(stringResource(R.string.text_top_bar_home))
+        changeIsVisibleBackIcon(false)
+    }
 }

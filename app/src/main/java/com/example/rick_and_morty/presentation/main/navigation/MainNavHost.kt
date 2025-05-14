@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -18,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.rick_and_morty.R
 import com.example.rick_and_morty.core.ui.widgets.BottomBar
 import com.example.rick_and_morty.core.ui.widgets.TopBar
+import com.example.rick_and_morty.presentation.screens.character_detail.navigation.navigateToDetailCharacter
 import com.example.rick_and_morty.presentation.screens.characters_list.navigation.HomeGraph
 import com.example.rick_and_morty.presentation.screens.characters_list.navigation.homeGraph
 
@@ -25,8 +27,12 @@ import com.example.rick_and_morty.presentation.screens.characters_list.navigatio
 fun MainNavHost(
     navController: NavHostController = rememberNavController()
 ) {
-    val nameTopBarState = remember {
+    val nameTopBarState: MutableState<String> = remember {
         mutableStateOf("")
+    }
+
+    val isVisibleNavigateBack: MutableState<Boolean> = remember {
+        mutableStateOf(false)
     }
 
     val listNavItem = listOf(
@@ -54,7 +60,11 @@ fun MainNavHost(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             TopBar(
-                nameTopBarState = nameTopBarState.value
+                nameTopBarState = nameTopBarState.value,
+                isVisibleBackIcon = isVisibleNavigateBack.value,
+                onCLickBack = {
+                    navController.popBackStack()
+                }
             )
         },
         bottomBar = {
@@ -72,6 +82,12 @@ fun MainNavHost(
                     .padding(paddingValues = paddingValues),
                 changeNameTopBar = { nameTopBar ->
                     nameTopBarState.value = nameTopBar
+                },
+                changeIsVisibleBackIcon = { isVisible ->
+                    isVisibleNavigateBack.value = isVisible
+                },
+                navigateToDetail = {
+                    navController.navigateToDetailCharacter(it)
                 }
             )
         }

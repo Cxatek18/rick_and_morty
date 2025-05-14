@@ -1,14 +1,14 @@
-package com.example.rick_and_morty.presentation.screens.characters_list.view_model
+package com.example.rick_and_morty.presentation.screens.character_detail.view_model
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rick_and_morty.R
 import com.example.rick_and_morty.core.ui.utils.IResourceService
-import com.example.rick_and_morty.domain.interactor.characters.ICharactersListManagementInteractor
+import com.example.rick_and_morty.domain.interactor.character.ICharacterDetailManagementInteractor
 import com.example.rick_and_morty.domain.module.error_handler.ApiResult
 import com.example.rick_and_morty.domain.module.error_handler.getStringSystemError
-import com.example.rick_and_morty.presentation.screens.characters_list.state.CharactersListManagementState
+import com.example.rick_and_morty.presentation.screens.character_detail.state.CharacterDetailManagementState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -20,35 +20,35 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CharactersListManagementViewModel @Inject constructor(
+class CharacterDetailManagementViewModel @Inject constructor(
     private val resolver: IResourceService,
-    private val charactersListManagementInteractor: ICharactersListManagementInteractor
+    private val characterDetailManagementInteractor: ICharacterDetailManagementInteractor
 ) : ViewModel() {
 
-    private var _state = MutableStateFlow<CharactersListManagementState>(
-        CharactersListManagementState.Loading
+    private var _state = MutableStateFlow<CharacterDetailManagementState>(
+        CharacterDetailManagementState.Loading
     )
-    val state: StateFlow<CharactersListManagementState> = _state.asStateFlow()
+    val state: StateFlow<CharacterDetailManagementState> = _state.asStateFlow()
 
 
     @SuppressLint("StringFormatMatches")
-    fun getListAllCharacters() {
+    fun getCharacterDetail(characterID: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            _state.value = CharactersListManagementState.Loading
+            _state.value = CharacterDetailManagementState.Loading
             delay(timeMillis = 1000)
-            charactersListManagementInteractor.getListAllCharacters()
+            characterDetailManagementInteractor.getCharacterDetail(characterID)
                 .catch {
-                    CharactersListManagementState.Error(
+                    CharacterDetailManagementState.Error(
                         errorText = resolver.getString(R.string.text_error_system),
                     )
                 }
                 .collect { result ->
                     when (result) {
                         is ApiResult.Error -> {
-                            val systemErrorText = result.type.getStringSystemError(resolver)
-                            if (systemErrorText != resolver.getString(R.string.text_error_in_server)) {
-                                _state.value = CharactersListManagementState.Error(
-                                    errorText = systemErrorText
+                            val errorText = result.type.getStringSystemError(resolver)
+                            if (errorText != resolver.getString(R.string.text_error_in_server)) {
+                                _state.value = CharacterDetailManagementState.Error(
+                                    errorText = errorText
                                 )
                             } else {
                                 // Тут как раз можем уже обработать те исключения которые нам отдал бэк по запрсоу
@@ -56,9 +56,8 @@ class CharactersListManagementViewModel @Inject constructor(
                         }
 
                         is ApiResult.Success -> {
-                            _state.value = CharactersListManagementState.Success(
-                                characters = result.data.characterList,
-                                info = result.data.info
+                            _state.value = CharacterDetailManagementState.Success(
+                                character = result.data
                             )
                         }
                     }

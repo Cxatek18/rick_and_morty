@@ -1,4 +1,4 @@
-package com.example.rick_and_morty.presentation.screens.characters_list
+package com.example.rick_and_morty.core.ui.components.characters
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import com.example.rick_and_morty.core.ui.theme.font_size_16
 
 @Composable
-fun CharactersListManagementErrorScreen(
+fun CharactersErrorScreen(
     errorText: String
 ) {
     Box(
