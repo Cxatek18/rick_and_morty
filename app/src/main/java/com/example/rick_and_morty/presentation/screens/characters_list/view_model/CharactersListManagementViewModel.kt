@@ -170,7 +170,8 @@ class CharactersListManagementViewModel @Inject constructor(
                         }
                         .toMutableList()
 
-                    val searchFilter = copyListStatusCharacterFilter.find { it.title == status?.title }
+                    val searchFilter =
+                        copyListStatusCharacterFilter.find { it.title == status?.title }
                     val indexFilter = copyListStatusCharacterFilter.indexOf(searchFilter)
                     copyListStatusCharacterFilter.removeAt(indexFilter)
                     searchFilter?.copy(isActive = !searchFilter.isActive)
@@ -217,7 +218,8 @@ class CharactersListManagementViewModel @Inject constructor(
                         }
                         .toMutableList()
 
-                    val searchFilter = copyListSpeciesCharacterFilter.find { it.title == species?.title }
+                    val searchFilter =
+                        copyListSpeciesCharacterFilter.find { it.title == species?.title }
                     val indexFilter = copyListSpeciesCharacterFilter.indexOf(searchFilter)
                     copyListSpeciesCharacterFilter.removeAt(indexFilter)
                     searchFilter?.copy(isActive = !searchFilter.isActive)
@@ -264,8 +266,7 @@ class CharactersListManagementViewModel @Inject constructor(
 
     fun onActiveGenderFilterChange(gender: GenderCharacterFilterModel?) {
         when (_state.value) {
-            is CharactersListManagementState.Error -> {}
-            CharactersListManagementState.Loading -> {}
+            is CharactersListManagementState.Error, CharactersListManagementState.Loading -> {}
             is CharactersListManagementState.Success -> {
                 val currentState = _state.value as CharactersListManagementState.Success
                 var copyListGenderCharacterFilter: List<GenderCharacterFilterModel>
@@ -285,7 +286,8 @@ class CharactersListManagementViewModel @Inject constructor(
                         }
                         .toMutableList()
 
-                    val searchFilter = copyListGenderCharacterFilter.find { it.title == gender?.title }
+                    val searchFilter =
+                        copyListGenderCharacterFilter.find { it.title == gender?.title }
                     val indexFilter = copyListGenderCharacterFilter.indexOf(searchFilter)
                     copyListGenderCharacterFilter.removeAt(indexFilter)
                     searchFilter?.copy(isActive = !searchFilter.isActive)

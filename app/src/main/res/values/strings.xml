@@ -50,4 +50,6 @@
     <string name="text_gender_status">Фильтр по полу</string>
     <string name="text_search_to_name">Поиск по имени</string>
     <string name="text_search_to_type">Поиск по типу</string>
+
+    <string name="text_content_desc_icon_menu">menu</string>
 </resources>
