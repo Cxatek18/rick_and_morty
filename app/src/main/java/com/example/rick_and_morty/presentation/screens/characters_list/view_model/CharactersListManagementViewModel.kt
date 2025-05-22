@@ -65,7 +65,8 @@ class CharactersListManagementViewModel @Inject constructor(
                             val systemErrorText = result.type.getStringSystemError(resolver)
                             if (systemErrorText != resolver.getString(R.string.text_error_in_server)) {
                                 _state.value = CharactersListManagementState.Error(
-                                    errorText = systemErrorText
+                                    errorText = systemErrorText,
+                                    isRefreshing = false
                                 )
                             } else {
                                 // Тут как раз можем уже обработать те исключения которые нам отдал бэк по запрсоу
@@ -113,7 +114,8 @@ class CharactersListManagementViewModel @Inject constructor(
                                             _state.value as CharactersListManagementState.Success
                                         val updateState = currentState.copy(
                                             characters = result.data.characterList,
-                                            info = result.data.info
+                                            info = result.data.info,
+                                            isRefreshing = false
                                         )
                                         _state.value = updateState
                                     }
@@ -331,6 +333,39 @@ class CharactersListManagementViewModel @Inject constructor(
                     species = updatedState.activeSpeciesCharacterFilter,
                     type = updatedState.textTypeCharacterFilter,
                     gender = updatedState.activeGenderCharacterFilter
+                )
+            }
+        }
+    }
+
+    fun pullToRefresh() {
+        when (_state.value) {
+            is CharactersListManagementState.Error -> {
+                val currentState = _state.value as CharactersListManagementState.Error
+                _state.value = currentState.copy(
+                    isRefreshing = true
+                )
+                getListAllCharacters(
+                    name = null,
+                    status = null,
+                    species = null,
+                    type = null,
+                    gender = null
+                )
+            }
+
+            CharactersListManagementState.Loading -> {}
+            is CharactersListManagementState.Success -> {
+                val currentState = _state.value as CharactersListManagementState.Success
+                _state.value = currentState.copy(
+                    isRefreshing = true
+                )
+                getListAllCharacters(
+                    name = currentState.textNameSearchCharacterFilter,
+                    status = currentState.activeStatusCharacterFilter,
+                    species = currentState.activeSpeciesCharacterFilter,
+                    type = currentState.textTypeCharacterFilter,
+                    gender = currentState.activeGenderCharacterFilter
                 )
             }
         }

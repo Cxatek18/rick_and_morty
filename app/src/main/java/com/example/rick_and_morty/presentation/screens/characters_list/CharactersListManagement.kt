@@ -18,9 +18,12 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,6 +50,7 @@ import com.example.rick_and_morty.presentation.screens.characters_list.state.Cha
 import com.example.rick_and_morty.presentation.screens.characters_list.view_model.CharactersListManagementViewModel
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharactersListManagement(
     modifier: Modifier = Modifier,
@@ -59,6 +63,8 @@ fun CharactersListManagement(
         viewModel.getListAllCharacters()
     }
 
+    val refreshState = rememberPullToRefreshState()
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -66,9 +72,17 @@ fun CharactersListManagement(
     ) {
         when (state) {
             is CharactersListManagementState.Error -> {
-                CharactersErrorScreen(
-                    errorText = state.errorText
-                )
+                PullToRefreshBox(
+                    state = refreshState,
+                    isRefreshing = state.isRefreshing,
+                    onRefresh = {
+                        viewModel.pullToRefresh()
+                    }
+                ) {
+                    CharactersErrorScreen(
+                        errorText = state.errorText
+                    )
+                }
             }
 
             CharactersListManagementState.Loading -> {
@@ -78,190 +92,198 @@ fun CharactersListManagement(
             is CharactersListManagementState.Success -> {
                 val drawerState = rememberDrawerState(DrawerValue.Closed)
                 val scopeDrawer = rememberCoroutineScope()
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(padding_10),
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        contentAlignment = Alignment.TopEnd
-                    ) {
-                        Button(
-                            onClick = {
-                                drawerState.isOpen
-                                scopeDrawer.launch {
-                                    if (drawerState.isOpen) {
-                                        drawerState.close()
-                                    } else {
-                                        drawerState.open()
-                                    }
-                                }
-                            }
-                        ) {
-                            val iconDrawer = if (drawerState.isOpen) {
-                                Icons.Default.Close
-                            } else {
-                                Icons.Default.Menu
-                            }
-                            Icon(
-                                imageVector = iconDrawer,
-                                contentDescription = stringResource(R.string.text_content_desc_icon_menu),
-                                tint = MaterialTheme.colorScheme.tertiary
-                            )
-                        }
+                PullToRefreshBox(
+                    state = refreshState,
+                    isRefreshing = state.isRefreshing,
+                    onRefresh = {
+                        viewModel.pullToRefresh()
                     }
-
-                    ModalDrawerCharactersFilters(
-                        drawerState = drawerState,
-                        contentInDrawer = {
-                            Column(
-                                modifier = Modifier
-                                    .verticalScroll(rememberScrollState())
-                                    .padding(horizontal = padding_20),
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(padding_10),
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            contentAlignment = Alignment.TopEnd
+                        ) {
+                            Button(
+                                onClick = {
+                                    drawerState.isOpen
+                                    scopeDrawer.launch {
+                                        if (drawerState.isOpen) {
+                                            drawerState.close()
+                                        } else {
+                                            drawerState.open()
+                                        }
+                                    }
+                                }
                             ) {
-                                Text(
-                                    modifier = Modifier,
-                                    text = stringResource(R.string.text_search_to_type),
-                                    color = MaterialTheme.colorScheme.secondary,
-                                    fontFamily = FontFamily.Monospace,
-                                    fontWeight = FontWeight.W500,
-                                    fontSize = font_size_12,
-                                    lineHeight = line_height_20
-                                )
-
-                                Spacer(modifier = Modifier.height(height = padding_7))
-
-                                CustomEditText(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    value = state.textTypeCharacterFilter ?: "",
-                                    onChange = viewModel::onTextTypeFilterChange,
-                                    placeholder = stringResource(R.string.placeholder_et_search_type)
-                                )
-
-                                Spacer(modifier = Modifier.height(height = padding_20))
-
-                                Text(
-                                    text = stringResource(R.string.text_filter_status),
-                                    color = MaterialTheme.colorScheme.secondary,
-                                    fontFamily = FontFamily.Monospace,
-                                    fontWeight = FontWeight.W500,
-                                    fontSize = font_size_12,
-                                    lineHeight = line_height_20
-                                )
-
-                                Spacer(modifier = Modifier.height(height = padding_7))
-
-                                LazyRow(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(space = padding_10)
-                                ) {
-                                    items(state.listStatusCharacterFilter) { filter ->
-                                        FilterStringItem(
-                                            filterTitle = filter.title,
-                                            isActiveFilter = filter.isActive,
-                                            onClickToFilter = {
-                                                viewModel.onActiveStatusFilterChange(filter)
-                                            }
-                                        )
-                                    }
+                                val iconDrawer = if (drawerState.isOpen) {
+                                    Icons.Default.Close
+                                } else {
+                                    Icons.Default.Menu
                                 }
-
-                                Spacer(modifier = Modifier.height(height = padding_20))
-
-                                Text(
-                                    text = stringResource(R.string.text_species_status),
-                                    color = MaterialTheme.colorScheme.secondary,
-                                    fontFamily = FontFamily.Monospace,
-                                    fontWeight = FontWeight.W500,
-                                    fontSize = font_size_12,
-                                    lineHeight = line_height_20
-                                )
-
-                                Spacer(modifier = Modifier.height(height = padding_7))
-
-                                LazyRow(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(space = padding_10)
-                                ) {
-                                    items(state.listSpeciesCharacterFilter) { filter ->
-                                        FilterStringItem(
-                                            filterTitle = filter.title,
-                                            isActiveFilter = filter.isActive,
-                                            onClickToFilter = {
-                                                viewModel.onActiveSpeciesFilterChange(filter)
-                                            }
-                                        )
-                                    }
-                                }
-
-                                Spacer(modifier = Modifier.height(height = padding_20))
-
-                                Text(
-                                    text = stringResource(R.string.text_gender_status),
-                                    color = MaterialTheme.colorScheme.secondary,
-                                    fontFamily = FontFamily.Monospace,
-                                    fontWeight = FontWeight.W500,
-                                    fontSize = font_size_12,
-                                    lineHeight = line_height_20
-                                )
-
-                                Spacer(modifier = Modifier.height(height = padding_7))
-
-                                LazyRow(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.spacedBy(space = padding_10)
-                                ) {
-                                    items(state.listGenderCharacterFilter) { filter ->
-                                        FilterStringItem(
-                                            filterTitle = filter.title,
-                                            isActiveFilter = filter.isActive,
-                                            onClickToFilter = {
-                                                viewModel.onActiveGenderFilterChange(filter)
-                                            }
-                                        )
-                                    }
-                                }
-                            }
-                        },
-                        content = {
-                            Column(
-                                modifier = Modifier.fillMaxSize(),
-                            ) {
-                                Text(
-                                    modifier = Modifier
-                                        .padding(bottom = padding_7, start = padding_20),
-                                    text = stringResource(R.string.text_search_to_name),
-                                    color = MaterialTheme.colorScheme.secondary,
-                                    fontFamily = FontFamily.Monospace,
-                                    fontWeight = FontWeight.W500,
-                                    fontSize = font_size_12,
-                                    lineHeight = line_height_20
-                                )
-
-                                CustomEditText(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = padding_20),
-                                    value = state.textNameSearchCharacterFilter ?: "",
-                                    onChange = viewModel::onTextNameSearchChange,
-                                    placeholder = stringResource(R.string.placeholder_et_search_character)
-                                )
-
-                                CharactersListManagementSuccessScreen(
-                                    modifier = Modifier.padding(horizontal = padding_10),
-                                    characters = state.characters,
-                                    onClickCharacter = {
-                                        onClickCharacter(it)
-                                    }
+                                Icon(
+                                    imageVector = iconDrawer,
+                                    contentDescription = stringResource(R.string.text_content_desc_icon_menu),
+                                    tint = MaterialTheme.colorScheme.tertiary
                                 )
                             }
                         }
-                    )
+
+                        ModalDrawerCharactersFilters(
+                            drawerState = drawerState,
+                            contentInDrawer = {
+                                Column(
+                                    modifier = Modifier
+                                        .verticalScroll(rememberScrollState())
+                                        .padding(horizontal = padding_20),
+                                ) {
+                                    Text(
+                                        modifier = Modifier,
+                                        text = stringResource(R.string.text_search_to_type),
+                                        color = MaterialTheme.colorScheme.secondary,
+                                        fontFamily = FontFamily.Monospace,
+                                        fontWeight = FontWeight.W500,
+                                        fontSize = font_size_12,
+                                        lineHeight = line_height_20
+                                    )
+
+                                    Spacer(modifier = Modifier.height(height = padding_7))
+
+                                    CustomEditText(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        value = state.textTypeCharacterFilter ?: "",
+                                        onChange = viewModel::onTextTypeFilterChange,
+                                        placeholder = stringResource(R.string.placeholder_et_search_type)
+                                    )
+
+                                    Spacer(modifier = Modifier.height(height = padding_20))
+
+                                    Text(
+                                        text = stringResource(R.string.text_filter_status),
+                                        color = MaterialTheme.colorScheme.secondary,
+                                        fontFamily = FontFamily.Monospace,
+                                        fontWeight = FontWeight.W500,
+                                        fontSize = font_size_12,
+                                        lineHeight = line_height_20
+                                    )
+
+                                    Spacer(modifier = Modifier.height(height = padding_7))
+
+                                    LazyRow(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(space = padding_10)
+                                    ) {
+                                        items(state.listStatusCharacterFilter) { filter ->
+                                            FilterStringItem(
+                                                filterTitle = filter.title,
+                                                isActiveFilter = filter.isActive,
+                                                onClickToFilter = {
+                                                    viewModel.onActiveStatusFilterChange(filter)
+                                                }
+                                            )
+                                        }
+                                    }
+
+                                    Spacer(modifier = Modifier.height(height = padding_20))
+
+                                    Text(
+                                        text = stringResource(R.string.text_species_status),
+                                        color = MaterialTheme.colorScheme.secondary,
+                                        fontFamily = FontFamily.Monospace,
+                                        fontWeight = FontWeight.W500,
+                                        fontSize = font_size_12,
+                                        lineHeight = line_height_20
+                                    )
+
+                                    Spacer(modifier = Modifier.height(height = padding_7))
+
+                                    LazyRow(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(space = padding_10)
+                                    ) {
+                                        items(state.listSpeciesCharacterFilter) { filter ->
+                                            FilterStringItem(
+                                                filterTitle = filter.title,
+                                                isActiveFilter = filter.isActive,
+                                                onClickToFilter = {
+                                                    viewModel.onActiveSpeciesFilterChange(filter)
+                                                }
+                                            )
+                                        }
+                                    }
+
+                                    Spacer(modifier = Modifier.height(height = padding_20))
+
+                                    Text(
+                                        text = stringResource(R.string.text_gender_status),
+                                        color = MaterialTheme.colorScheme.secondary,
+                                        fontFamily = FontFamily.Monospace,
+                                        fontWeight = FontWeight.W500,
+                                        fontSize = font_size_12,
+                                        lineHeight = line_height_20
+                                    )
+
+                                    Spacer(modifier = Modifier.height(height = padding_7))
+
+                                    LazyRow(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.spacedBy(space = padding_10)
+                                    ) {
+                                        items(state.listGenderCharacterFilter) { filter ->
+                                            FilterStringItem(
+                                                filterTitle = filter.title,
+                                                isActiveFilter = filter.isActive,
+                                                onClickToFilter = {
+                                                    viewModel.onActiveGenderFilterChange(filter)
+                                                }
+                                            )
+                                        }
+                                    }
+                                }
+                            },
+                            content = {
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                ) {
+                                    Text(
+                                        modifier = Modifier
+                                            .padding(bottom = padding_7, start = padding_20),
+                                        text = stringResource(R.string.text_search_to_name),
+                                        color = MaterialTheme.colorScheme.secondary,
+                                        fontFamily = FontFamily.Monospace,
+                                        fontWeight = FontWeight.W500,
+                                        fontSize = font_size_12,
+                                        lineHeight = line_height_20
+                                    )
+
+                                    CustomEditText(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = padding_20),
+                                        value = state.textNameSearchCharacterFilter ?: "",
+                                        onChange = viewModel::onTextNameSearchChange,
+                                        placeholder = stringResource(R.string.placeholder_et_search_character)
+                                    )
+
+                                    CharactersListManagementSuccessScreen(
+                                        modifier = Modifier.padding(horizontal = padding_10),
+                                        characters = state.characters,
+                                        onClickCharacter = {
+                                            onClickCharacter(it)
+                                        }
+                                    )
+                                }
+                            }
+                        )
+                    }
                 }
             }
         }

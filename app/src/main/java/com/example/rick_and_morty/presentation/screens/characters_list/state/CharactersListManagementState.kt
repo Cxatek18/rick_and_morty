@@ -20,10 +20,12 @@ sealed interface CharactersListManagementState {
         val listSpeciesCharacterFilter: List<SpeciesCharacterFilterModel> = listOf(),
         val textTypeCharacterFilter: String? = null,
         val activeGenderCharacterFilter: GenderCharacterFilterModel? = null,
-        val listGenderCharacterFilter: List<GenderCharacterFilterModel> = listOf()
+        val listGenderCharacterFilter: List<GenderCharacterFilterModel> = listOf(),
+        val isRefreshing: Boolean = false
     ) : CharactersListManagementState
 
     data class Error(
-        val errorText: String
+        val errorText: String,
+        val isRefreshing: Boolean = false
     ) : CharactersListManagementState
 }
