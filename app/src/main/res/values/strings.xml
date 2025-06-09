@@ -6,6 +6,12 @@
     <string name="text_character_status_dead">Dead</string>
     <string name="text_character_status_unknown">unknown</string>
 
+    <string name="text_character_gender_male">Male</string>
+    <string name="text_character_gender_female">Female</string>
+
+    <string name="text_character_species_human">Human</string>
+    <string name="text_character_species_alien">Alien</string>
+
 
     <string name="text_error_unknown">Неизвестная ошибка, напишите нам и мы её решим в ближайшее время, код: %s</string>
     <string name="text_error_null_type">Опа null type</string>
@@ -36,4 +42,14 @@
     <string name="text_btn_view_all_episodes">View all episodes</string>
 
     <string name="text_content_desc_back_icon">Back</string>
+    <string name="placeholder_et_search_character">Search character</string>
+    <string name="placeholder_et_search_type">Search to type</string>
+
+    <string name="text_filter_status">Фильтр по статусам</string>
+    <string name="text_species_status">Фильтр по виду</string>
+    <string name="text_gender_status">Фильтр по полу</string>
+    <string name="text_search_to_name">Поиск по имени</string>
+    <string name="text_search_to_type">Поиск по типу</string>
+
+    <string name="text_content_desc_icon_menu">menu</string>
 </resources>

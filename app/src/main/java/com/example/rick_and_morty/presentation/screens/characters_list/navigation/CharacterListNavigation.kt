@@ -6,13 +6,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.rick_and_morty.R
-import com.example.rick_and_morty.presentation.screens.character_detail.navigation.CharacterDetailDestination
 import com.example.rick_and_morty.presentation.screens.character_detail.navigation.characterDetail
-import com.example.rick_and_morty.presentation.screens.character_detail.view_model.CharacterDetailManagementViewModel
 import com.example.rick_and_morty.presentation.screens.characters_list.CharactersListManagement
 import com.example.rick_and_morty.presentation.screens.characters_list.view_model.CharactersListManagementViewModel
 import kotlinx.serialization.Serializable

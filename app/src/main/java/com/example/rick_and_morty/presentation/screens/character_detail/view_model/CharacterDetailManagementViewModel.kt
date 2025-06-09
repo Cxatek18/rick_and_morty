@@ -34,8 +34,10 @@ class CharacterDetailManagementViewModel @Inject constructor(
     @SuppressLint("StringFormatMatches")
     fun getCharacterDetail(characterID: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            _state.value = CharacterDetailManagementState.Loading
-            delay(timeMillis = 1000)
+            if (_state.value::class.java != CharacterDetailManagementState.Success::class.java) {
+                _state.value = CharacterDetailManagementState.Loading
+                delay(timeMillis = 500)
+            }
             characterDetailManagementInteractor.getCharacterDetail(characterID)
                 .catch {
                     CharacterDetailManagementState.Error(
@@ -48,7 +50,8 @@ class CharacterDetailManagementViewModel @Inject constructor(
                             val errorText = result.type.getStringSystemError(resolver)
                             if (errorText != resolver.getString(R.string.text_error_in_server)) {
                                 _state.value = CharacterDetailManagementState.Error(
-                                    errorText = errorText
+                                    errorText = errorText,
+                                    isRefreshing = false
                                 )
                             } else {
                                 // Тут как раз можем уже обработать те исключения которые нам отдал бэк по запрсоу
@@ -57,11 +60,33 @@ class CharacterDetailManagementViewModel @Inject constructor(
 
                         is ApiResult.Success -> {
                             _state.value = CharacterDetailManagementState.Success(
-                                character = result.data
+                                character = result.data,
+                                isRefreshing = false
                             )
                         }
                     }
                 }
+        }
+    }
+
+    fun pullToRefresh(characterID: Int) {
+        when (_state.value) {
+            is CharacterDetailManagementState.Error -> {
+                val currentState = _state.value as CharacterDetailManagementState.Error
+                _state.value = currentState.copy(
+                    isRefreshing = true
+                )
+                getCharacterDetail(characterID)
+            }
+
+            CharacterDetailManagementState.Loading -> {}
+            is CharacterDetailManagementState.Success -> {
+                val currentState = _state.value as CharacterDetailManagementState.Success
+                _state.value = currentState.copy(
+                    isRefreshing = true
+                )
+                getCharacterDetail(characterID)
+            }
         }
     }
 }
