@@ -10,8 +10,8 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import com.example.rick_and_morty.core.ui.components.characters.CharactersErrorScreen
-import com.example.rick_and_morty.core.ui.components.characters.CharactersLoadingScreen
+import com.example.rick_and_morty.core.ui.components.characters.ErrorScreen
+import com.example.rick_and_morty.core.ui.components.characters.LoadingScreen
 import com.example.rick_and_morty.presentation.screens.character_detail.state.CharacterDetailManagementState
 import com.example.rick_and_morty.presentation.screens.character_detail.view_model.CharacterDetailManagementViewModel
 
@@ -45,14 +45,14 @@ fun CharacterDetailManagement(
                         viewModel.pullToRefresh(characterId)
                     }
                 ) {
-                    CharactersErrorScreen(
+                    ErrorScreen(
                         errorText = state.errorText
                     )
                 }
             }
 
             CharacterDetailManagementState.Loading -> {
-                CharactersLoadingScreen()
+                LoadingScreen()
             }
 
             is CharacterDetailManagementState.Success -> {

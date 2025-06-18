@@ -33,11 +33,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.rick_and_morty.R
-import com.example.rick_and_morty.core.ui.components.characters.CharactersErrorScreen
-import com.example.rick_and_morty.core.ui.components.characters.CharactersLoadingScreen
-import com.example.rick_and_morty.core.ui.theme.Rick_and_mortyTheme
+import com.example.rick_and_morty.core.ui.components.characters.ErrorScreen
+import com.example.rick_and_morty.core.ui.components.characters.LoadingScreen
 import com.example.rick_and_morty.core.ui.theme.font_size_12
 import com.example.rick_and_morty.core.ui.theme.line_height_20
 import com.example.rick_and_morty.core.ui.theme.padding_10
@@ -79,14 +77,14 @@ fun CharactersListManagement(
                         viewModel.pullToRefresh()
                     }
                 ) {
-                    CharactersErrorScreen(
+                    ErrorScreen(
                         errorText = state.errorText
                     )
                 }
             }
 
             CharactersListManagementState.Loading -> {
-                CharactersLoadingScreen()
+                LoadingScreen()
             }
 
             is CharactersListManagementState.Success -> {
@@ -287,13 +285,5 @@ fun CharactersListManagement(
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-private fun PreviewCharactersListScreen() {
-    Rick_and_mortyTheme {
-
     }
 }

@@ -14,6 +14,7 @@ import com.example.rick_and_morty.domain.module.error_handler.getStringSystemErr
 import com.example.rick_and_morty.presentation.screens.characters_list.state.CharactersListManagementState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,6 +34,8 @@ class CharactersListManagementViewModel @Inject constructor(
     )
     val state: StateFlow<CharactersListManagementState> = _state.asStateFlow()
 
+    private var searchNameJob: Job? = null
+    private var searchTypeJob: Job? = null
 
     @SuppressLint("StringFormatMatches")
     fun getListAllCharacters(
@@ -129,23 +132,11 @@ class CharactersListManagementViewModel @Inject constructor(
     }
 
     fun onTextNameSearchChange(name: String) {
-        when (_state.value) {
-            is CharactersListManagementState.Error -> {}
-            CharactersListManagementState.Loading -> {}
-            is CharactersListManagementState.Success -> {
-                val currentState = _state.value as CharactersListManagementState.Success
-                val updatedState = currentState.copy(
-                    textNameSearchCharacterFilter = name.ifEmpty { null }
-                )
-                _state.value = updatedState
-                getListAllCharacters(
-                    name = updatedState.textNameSearchCharacterFilter,
-                    status = updatedState.activeStatusCharacterFilter,
-                    species = updatedState.activeSpeciesCharacterFilter,
-                    type = updatedState.textTypeCharacterFilter,
-                    gender = updatedState.activeGenderCharacterFilter
-                )
-            }
+        searchNameJob?.cancel()
+        updateStateTextNameSearchCharacter(name)
+        searchNameJob = viewModelScope.launch {
+            delay(3000)
+            executeSearchTextSearch()
         }
     }
 
@@ -246,23 +237,11 @@ class CharactersListManagementViewModel @Inject constructor(
     }
 
     fun onTextTypeFilterChange(type: String) {
-        when (_state.value) {
-            is CharactersListManagementState.Error -> {}
-            CharactersListManagementState.Loading -> {}
-            is CharactersListManagementState.Success -> {
-                val currentState = _state.value as CharactersListManagementState.Success
-                val updatedState = currentState.copy(
-                    textTypeCharacterFilter = type.ifEmpty { null }
-                )
-                _state.value = updatedState
-                getListAllCharacters(
-                    name = updatedState.textNameSearchCharacterFilter,
-                    status = updatedState.activeStatusCharacterFilter,
-                    species = updatedState.activeSpeciesCharacterFilter,
-                    type = updatedState.textTypeCharacterFilter,
-                    gender = updatedState.activeGenderCharacterFilter
-                )
-            }
+        searchTypeJob?.cancel()
+        updateStateTextTypeSearchCharacter(type)
+        searchTypeJob = viewModelScope.launch {
+            delay(3000)
+            executeSearchTextSearch()
         }
     }
 
@@ -369,5 +348,32 @@ class CharactersListManagementViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun updateStateTextTypeSearchCharacter(text: String) {
+        val currentState = _state.value as CharactersListManagementState.Success
+        val updatedState = currentState.copy(
+            textTypeCharacterFilter = text.ifEmpty { null }
+        )
+        _state.value = updatedState
+    }
+
+    private fun updateStateTextNameSearchCharacter(text: String) {
+        val currentState = _state.value as CharactersListManagementState.Success
+        val updatedState = currentState.copy(
+            textNameSearchCharacterFilter = text.ifEmpty { null }
+        )
+        _state.value = updatedState
+    }
+
+    private fun executeSearchTextSearch() {
+        val currentState = _state.value as CharactersListManagementState.Success
+        getListAllCharacters(
+            name = currentState.textNameSearchCharacterFilter,
+            status = currentState.activeStatusCharacterFilter,
+            species = currentState.activeSpeciesCharacterFilter,
+            type = currentState.textTypeCharacterFilter,
+            gender = currentState.activeGenderCharacterFilter
+        )
     }
 }

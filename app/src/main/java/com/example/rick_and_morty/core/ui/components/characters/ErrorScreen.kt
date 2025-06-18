@@ -12,7 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import com.example.rick_and_morty.core.ui.theme.font_size_16
 
 @Composable
-fun CharactersErrorScreen(
+fun ErrorScreen(
     errorText: String
 ) {
     Box(
