@@ -9,18 +9,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.example.rick_and_morty.core.ui.theme.font_size_16
+import com.example.rick_and_morty.presentation.main.navigation.BottomNavigationItem
 import com.example.rick_and_morty.presentation.main.navigation.NavItem
 
 @Composable
 fun BottomBar(
     modifier: Modifier = Modifier,
-    navItemList: List<NavItem>
+    navItemList: List<NavItem>,
+    onClickToItem: (itemBottom: BottomNavigationItem) -> Unit
 ) {
     NavigationBar {
         navItemList.forEachIndexed { index, navItem ->
             NavigationBarItem(
                 selected = navItem.isSelected,
-                onClick = {},
+                onClick = {
+                    onClickToItem(
+                        navItem.bottomNavigationItem
+                    )
+                },
                 icon = {
                     Icon(
                         imageVector = navItem.image,

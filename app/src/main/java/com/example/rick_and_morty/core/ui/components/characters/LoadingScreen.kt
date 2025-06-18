@@ -13,7 +13,7 @@ import com.example.rick_and_morty.core.ui.theme.size_40
 import com.example.rick_and_morty.core.ui.theme.size_border_card_2
 
 @Composable
-fun CharactersLoadingScreen() {
+fun LoadingScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize(),

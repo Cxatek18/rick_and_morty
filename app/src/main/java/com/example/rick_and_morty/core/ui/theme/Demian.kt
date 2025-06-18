@@ -20,12 +20,9 @@ val size_25 = 25.dp
 val size_40 = 40.dp
 
 
-
-
 // rounded
 val rounded20 = 20.dp
 val rounded12 = 12.dp
-
 
 
 // padding
@@ -37,17 +34,16 @@ val padding_20 = 20.dp
 val padding_36 = 36.dp
 
 
-
 // font size
-val  font_size_12 = 12.sp
-val  font_size_16 = 16.sp
-val  font_size_18 = 18.sp
-val  font_size_26 = 26.sp
-
+val font_size_12 = 12.sp
+val font_size_14 = 14.sp
+val font_size_16 = 16.sp
+val font_size_26 = 26.sp
 
 
 // line height
 val line_height_20 = 20.sp
+
 
 // letter spacing
 val letter_spacing_1_2 = 1.2.sp

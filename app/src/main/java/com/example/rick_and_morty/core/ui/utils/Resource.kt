@@ -18,9 +18,3 @@ class ResourcesService @Inject constructor(
 
     override fun getString(resId: Int): String = resources.getString(resId)
 }
-
-
-
-
-
-

@@ -6,5 +6,6 @@ data class NavItem(
     val label: String,
     val image: ImageVector,
     val contentDescription: String,
-    val isSelected: Boolean
+    val isSelected: Boolean,
+    val bottomNavigationItem: BottomNavigationItem
 )

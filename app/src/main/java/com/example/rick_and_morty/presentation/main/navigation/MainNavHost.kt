@@ -19,14 +19,21 @@ import androidx.navigation.compose.rememberNavController
 import com.example.rick_and_morty.R
 import com.example.rick_and_morty.core.ui.widgets.BottomBar
 import com.example.rick_and_morty.core.ui.widgets.TopBar
+import com.example.rick_and_morty.presentation.main.extensions.switchingTheActiveElement
 import com.example.rick_and_morty.presentation.screens.character_detail.navigation.navigateToDetailCharacter
 import com.example.rick_and_morty.presentation.screens.characters_list.navigation.HomeGraph
 import com.example.rick_and_morty.presentation.screens.characters_list.navigation.homeGraph
+import com.example.rick_and_morty.presentation.screens.episodes_list.navigation.EpisodesGraph
+import com.example.rick_and_morty.presentation.screens.episodes_list.navigation.listEpisodesGraph
 
 @Composable
 fun MainNavHost(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
 ) {
+    val homeLabel = stringResource(R.string.text_bottom_bar_home)
+    val episodesLabel = stringResource(R.string.text_bottom_bar_episodes)
+    val searchLabel = stringResource(R.string.text_bottom_bar_search)
+
     val nameTopBarState: MutableState<String> = remember {
         mutableStateOf("")
     }
@@ -35,26 +42,37 @@ fun MainNavHost(
         mutableStateOf(false)
     }
 
-    val listNavItem = listOf(
-        NavItem(
-            label = stringResource(R.string.text_bottom_bar_home),
-            image = Icons.Default.Home,
-            contentDescription = stringResource(R.string.text_bottom_bar_home),
-            isSelected = true
-        ),
-        NavItem(
-            label = stringResource(R.string.text_bottom_bar_episodes),
-            image = Icons.Default.PlayArrow,
-            contentDescription = stringResource(R.string.text_bottom_bar_episodes),
-            isSelected = false
-        ),
-        NavItem(
-            label = stringResource(R.string.text_bottom_bar_search),
-            image = Icons.Default.Search,
-            contentDescription = stringResource(R.string.text_bottom_bar_search),
-            isSelected = false
-        ),
-    )
+    val listNavItem: MutableState<List<NavItem>> = remember {
+        mutableStateOf(
+            listOf(
+                NavItem(
+                    label = homeLabel,
+                    image = Icons.Default.Home,
+                    contentDescription = homeLabel,
+                    isSelected = true,
+                    bottomNavigationItem = BottomNavigationItem.ListCharacter
+                ),
+                NavItem(
+                    label = episodesLabel,
+                    image = Icons.Default.PlayArrow,
+                    contentDescription = episodesLabel,
+                    isSelected = false,
+                    bottomNavigationItem = BottomNavigationItem.ListEpisodes
+                ),
+                NavItem(
+                    label = searchLabel,
+                    image = Icons.Default.Search,
+                    contentDescription = searchLabel,
+                    isSelected = false,
+                    bottomNavigationItem = BottomNavigationItem.ListLocation
+                ),
+            )
+        )
+    }
+
+    val activeItemNavBar: MutableState<BottomNavigationItem> = remember {
+        mutableStateOf(BottomNavigationItem.ListCharacter)
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -69,7 +87,28 @@ fun MainNavHost(
         },
         bottomBar = {
             BottomBar(
-                navItemList = listNavItem
+                navItemList = listNavItem.value,
+                onClickToItem = {
+                    if (it != activeItemNavBar.value) {
+                        activeItemNavBar.value = it
+                        when (activeItemNavBar.value) {
+                            BottomNavigationItem.ListCharacter -> {
+                                navController.popBackStack()
+                                navController.navigate(HomeGraph)
+                            }
+
+                            BottomNavigationItem.ListEpisodes -> {
+                                navController.popBackStack()
+                                navController.navigate(EpisodesGraph)
+                            }
+
+                            BottomNavigationItem.ListLocation -> {}
+                        }
+                        listNavItem.value = listNavItem.value.switchingTheActiveElement(
+                            elementIsActivated = it
+                        )
+                    }
+                }
             )
         }
     ) { paddingValues ->
@@ -88,6 +127,20 @@ fun MainNavHost(
                 },
                 navigateToDetail = {
                     navController.navigateToDetailCharacter(it)
+                }
+            )
+
+            listEpisodesGraph(
+                modifier = Modifier
+                    .padding(paddingValues = paddingValues),
+                changeNameTopBar = { nameTopBar ->
+                    nameTopBarState.value = nameTopBar
+                },
+                changeIsVisibleBackIcon = { isVisible ->
+                    isVisibleNavigateBack.value = isVisible
+                },
+                navigateToDetail = {
+
                 }
             )
         }
