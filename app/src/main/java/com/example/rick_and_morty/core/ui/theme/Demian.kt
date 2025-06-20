@@ -15,6 +15,8 @@ val size_height_card_image = 180.dp
 
 val size_height_character_image = 280.dp
 
+val size_height_character_image_in_episode = 48.dp
+
 val size_10 = 10.dp
 val size_25 = 25.dp
 val size_40 = 40.dp
@@ -27,6 +29,7 @@ val rounded12 = 12.dp
 
 // padding
 val padding_3 = 3.dp
+val padding_5 = 5.dp
 val padding_7 = 7.dp
 val padding_10 = 10.dp
 val padding_16 = 16.dp

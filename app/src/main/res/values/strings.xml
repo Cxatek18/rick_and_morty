@@ -24,6 +24,7 @@
     <string name="text_top_bar_home">Home</string>
     <string name="text_top_bar_detail_character">Character Detail</string>
     <string name="text_top_bar_list_episodes">All episodes</string>
+    <string name="text_top_bar_detail_episode">Episode Detail</string>
 
 
     <string name="text_bottom_bar_home">Home</string>
@@ -59,4 +60,8 @@
     <string name="text_content_desc_icon_menu">menu</string>
 
     <string name="text_episode">Episode</string>
+    <string name="text_episode_name">Название эпизода: %s</string>
+    <string name="text_episode_air_date">Дата выхода в эфир: %s</string>
+    <string name="text_episode_code">Код эпизода: %s</string>
+    <string name="text_episode_characters">Персонжи в эпизоде:</string>
 </resources>

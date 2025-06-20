@@ -6,6 +6,8 @@ import com.example.rick_and_morty.domain.interactor.character.CharacterDetailMan
 import com.example.rick_and_morty.domain.interactor.character.ICharacterDetailManagementInteractor
 import com.example.rick_and_morty.domain.interactor.characters.CharactersListManagementInteractor
 import com.example.rick_and_morty.domain.interactor.characters.ICharactersListManagementInteractor
+import com.example.rick_and_morty.domain.interactor.episode.EpisodeDetailInteractor
+import com.example.rick_and_morty.domain.interactor.episode.IEpisodeDetailInteractor
 import com.example.rick_and_morty.domain.interactor.episodes.EpisodesListManagerInteractor
 import com.example.rick_and_morty.domain.interactor.episodes.IEpisodesListManagerInteractor
 import dagger.Binds
@@ -34,4 +36,9 @@ interface PresentationModule {
     fun bindEpisodesListManagementInteractor(
         impl: EpisodesListManagerInteractor
     ): IEpisodesListManagerInteractor
+
+    @Binds
+    fun bindEpisodeDetailInteractor(
+        impl: EpisodeDetailInteractor
+    ): IEpisodeDetailInteractor
 }

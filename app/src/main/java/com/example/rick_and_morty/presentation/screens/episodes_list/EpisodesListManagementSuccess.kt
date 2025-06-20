@@ -11,7 +11,8 @@ import com.example.rick_and_morty.domain.module.episodes.EpisodeItemModel
 @Composable
 fun EpisodesListManagementSuccess(
     modifier: Modifier = Modifier,
-    episodes: List<EpisodeItemModel>
+    episodes: List<EpisodeItemModel>,
+    onClickNavigateToEpisodeDetail: (episodeId: Int) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.fillMaxWidth()
@@ -19,9 +20,13 @@ fun EpisodesListManagementSuccess(
         items(episodes) { episode ->
             EpisodeCard(
                 modifier = Modifier,
+                episodeId = episode.id,
                 episodeName = episode.name,
                 episodeCode = episode.episode,
-                episodeRelease = episode.airDate
+                episodeRelease = episode.airDate,
+                onClickNavigateToEpisodeDetail = {
+                    onClickNavigateToEpisodeDetail(it)
+                }
             )
         }
     }

@@ -9,6 +9,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.rick_and_morty.R
+import com.example.rick_and_morty.presentation.screens.episode_detail.navigation.episodeDetail
 import com.example.rick_and_morty.presentation.screens.episodes_list.EpisodesListManagement
 import com.example.rick_and_morty.presentation.screens.episodes_list.view_model.EpisodesListManagementViewModel
 import kotlinx.serialization.Serializable
@@ -38,6 +39,15 @@ fun NavGraphBuilder.listEpisodesGraph(
                 changeIsVisibleBackIcon(it)
             }
         )
+        episodeDetail(
+            modifier = modifier,
+            changeNameTopBar = {
+                changeNameTopBar(it)
+            },
+            changeIsVisibleBackIcon = {
+                changeIsVisibleBackIcon(it)
+            }
+        )
     }
 }
 
@@ -53,7 +63,10 @@ fun NavGraphBuilder.episodesList(
         EpisodesListManagement(
             modifier = modifier,
             state = state,
-            viewModel = viewModel
+            viewModel = viewModel,
+            onClickNavigateToEpisodeDetail = {
+                navigateToDetail(it)
+            }
         )
         changeNameTopBar(stringResource(R.string.text_top_bar_list_episodes))
         changeIsVisibleBackIcon(false)

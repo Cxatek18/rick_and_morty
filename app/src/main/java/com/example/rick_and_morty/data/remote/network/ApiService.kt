@@ -1,7 +1,9 @@
 package com.example.rick_and_morty.data.remote.network
 
 import com.example.rick_and_morty.domain.module.character.CharacterDetailResultModel
+import com.example.rick_and_morty.domain.module.characters.CharacterItemModel
 import com.example.rick_and_morty.domain.module.characters.CharactersResultModel
+import com.example.rick_and_morty.domain.module.episodes.EpisodeItemModel
 import com.example.rick_and_morty.domain.module.episodes.EpisodesResultModel
 import retrofit2.Response
 import retrofit2.http.GET
@@ -44,4 +46,24 @@ interface ApiService {
         @Query("name") name: String? = null,
         @Query("episode") episode: String? = null,
     ): Response<EpisodesResultModel>
+
+    @GET("episode/{episodeId}")
+    @Headers(
+        "Accept-Language: ru,en;q=0.9",
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    suspend fun getEpisodeDetail(
+        @Path("episodeId") episodeId: Int
+    ): Response<EpisodeItemModel>
+
+    @GET("character/{listCharacterIdToString}")
+    @Headers(
+        "Accept-Language: ru,en;q=0.9",
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    suspend fun getMultipleCharacter(
+        @Path("listCharacterIdToString") listCharacterIdToString: String
+    ): Response<List<CharacterItemModel>>
 }
