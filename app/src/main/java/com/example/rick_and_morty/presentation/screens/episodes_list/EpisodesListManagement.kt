@@ -50,7 +50,8 @@ import kotlinx.coroutines.launch
 fun EpisodesListManagement(
     modifier: Modifier = Modifier,
     state: EpisodesListManagementState,
-    viewModel: EpisodesListManagementViewModel
+    viewModel: EpisodesListManagementViewModel,
+    onClickNavigateToEpisodeDetail: (episodeId: Int) -> Unit
 ) {
     LaunchedEffect(Unit) {
         viewModel.getListEpisodes()
@@ -182,7 +183,10 @@ fun EpisodesListManagement(
                                 ) {
                                     EpisodesListManagementSuccess(
                                         modifier = Modifier,
-                                        episodes = state.episodes
+                                        episodes = state.episodes,
+                                        onClickNavigateToEpisodeDetail = {
+                                            onClickNavigateToEpisodeDetail(it)
+                                        }
                                     )
                                 }
                             }

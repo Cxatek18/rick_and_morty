@@ -1,6 +1,7 @@
 package com.example.rick_and_morty.core.ui.components.characters
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,9 +32,11 @@ import com.example.rick_and_morty.core.ui.theme.size_width_card
 @Composable
 fun EpisodeCard(
     modifier: Modifier = Modifier,
+    episodeId: Int,
     episodeName: String,
     episodeCode: String,
-    episodeRelease: String
+    episodeRelease: String,
+    onClickNavigateToEpisodeDetail: (episodeId: Int) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -51,7 +54,10 @@ fun EpisodeCard(
             .padding(
                 vertical = padding_7,
                 horizontal = padding_10
-            ),
+            )
+            .clickable {
+                onClickNavigateToEpisodeDetail(episodeId)
+            },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

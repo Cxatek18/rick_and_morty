@@ -23,6 +23,7 @@ import com.example.rick_and_morty.presentation.main.extensions.switchingTheActiv
 import com.example.rick_and_morty.presentation.screens.character_detail.navigation.navigateToDetailCharacter
 import com.example.rick_and_morty.presentation.screens.characters_list.navigation.HomeGraph
 import com.example.rick_and_morty.presentation.screens.characters_list.navigation.homeGraph
+import com.example.rick_and_morty.presentation.screens.episode_detail.navigation.navigateToDetailEpisode
 import com.example.rick_and_morty.presentation.screens.episodes_list.navigation.EpisodesGraph
 import com.example.rick_and_morty.presentation.screens.episodes_list.navigation.listEpisodesGraph
 
@@ -93,13 +94,15 @@ fun MainNavHost(
                         activeItemNavBar.value = it
                         when (activeItemNavBar.value) {
                             BottomNavigationItem.ListCharacter -> {
-                                navController.popBackStack()
-                                navController.navigate(HomeGraph)
+                                navController.navigate(HomeGraph) {
+                                    popUpTo(HomeGraph) { inclusive = true }
+                                }
                             }
 
                             BottomNavigationItem.ListEpisodes -> {
-                                navController.popBackStack()
-                                navController.navigate(EpisodesGraph)
+                                navController.navigate(EpisodesGraph) {
+                                    popUpTo(EpisodesGraph) { inclusive = true }
+                                }
                             }
 
                             BottomNavigationItem.ListLocation -> {}
@@ -140,7 +143,7 @@ fun MainNavHost(
                     isVisibleNavigateBack.value = isVisible
                 },
                 navigateToDetail = {
-
+                    navController.navigateToDetailEpisode(it)
                 }
             )
         }
