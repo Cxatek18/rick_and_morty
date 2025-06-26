@@ -26,6 +26,7 @@ import com.example.rick_and_morty.presentation.screens.characters_list.navigatio
 import com.example.rick_and_morty.presentation.screens.episode_detail.navigation.navigateToDetailEpisode
 import com.example.rick_and_morty.presentation.screens.episodes_list.navigation.EpisodesGraph
 import com.example.rick_and_morty.presentation.screens.episodes_list.navigation.listEpisodesGraph
+import com.example.rick_and_morty.presentation.screens.location_detail.navigation.navigateToDetailLocation
 import com.example.rick_and_morty.presentation.screens.locations_list.navigation.LocationsGraph
 import com.example.rick_and_morty.presentation.screens.locations_list.navigation.listLocationsGraph
 
@@ -163,7 +164,7 @@ fun MainNavHost(
                     isVisibleNavigateBack.value = isVisible
                 },
                 navigateToDetail = {
-
+                    navController.navigateToDetailLocation(it)
                 }
             )
         }

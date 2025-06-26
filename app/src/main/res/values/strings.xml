@@ -26,6 +26,7 @@
     <string name="text_top_bar_list_episodes">All episodes</string>
     <string name="text_top_bar_detail_episode">Episode Detail</string>
     <string name="text_top_bar_list_locations">All locations</string>
+    <string name="text_top_bar_detail_location">Location Detail</string>
 
 
     <string name="text_bottom_bar_home">Home</string>
@@ -72,4 +73,8 @@
     <string name="placeholder_et_search_type_location">Search to type location</string>
     <string name="text_search_to_dimension_location">Поиск по названию измерения локации</string>
     <string name="placeholder_et_search_dimension_location">Search to name dimension location</string>
+
+    <string name="text_location_name">Название локации: %s</string>
+    <string name="text_location_type">Тип локации: %s</string>
+    <string name="text_location_dimension">Измерение локации: %s</string>
 </resources>
