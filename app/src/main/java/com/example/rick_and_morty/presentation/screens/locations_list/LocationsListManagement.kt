@@ -206,7 +206,7 @@ fun LocationsListManagement(
                                         modifier = Modifier,
                                         locations = state.locations,
                                         onClickNavigateToLocationsDetail = {
-
+                                            onClickNavigationToLocationDetail(it)
                                         }
                                     )
                                 }

@@ -9,6 +9,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.rick_and_morty.R
+import com.example.rick_and_morty.presentation.screens.location_detail.navigation.locationDetail
 import com.example.rick_and_morty.presentation.screens.locations_list.LocationsListManagement
 import com.example.rick_and_morty.presentation.screens.locations_list.view_model.LocationsListManagementViewModel
 import kotlinx.serialization.Serializable
@@ -38,7 +39,15 @@ fun NavGraphBuilder.listLocationsGraph(
                 changeIsVisibleBackIcon(it)
             }
         )
-
+        locationDetail(
+            modifier = modifier,
+            changeNameTopBar = {
+                changeNameTopBar(it)
+            },
+            changeIsVisibleBackIcon = {
+                changeIsVisibleBackIcon(it)
+            }
+        )
     }
 }
 
@@ -56,7 +65,7 @@ fun NavGraphBuilder.locationsList(
             state = state,
             viewModel = viewModel,
             onClickNavigationToLocationDetail = {
-//                navigateToDetail(it)
+                navigateToDetail(it)
             }
         )
         changeNameTopBar(stringResource(R.string.text_top_bar_list_locations))
