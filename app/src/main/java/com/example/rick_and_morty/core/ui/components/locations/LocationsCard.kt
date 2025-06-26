@@ -1,4 +1,4 @@
-package com.example.rick_and_morty.core.ui.components.characters
+package com.example.rick_and_morty.core.ui.components.locations
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,24 +19,22 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.example.rick_and_morty.R
-import com.example.rick_and_morty.core.ui.theme.font_size_12
 import com.example.rick_and_morty.core.ui.theme.font_size_14
 import com.example.rick_and_morty.core.ui.theme.font_size_16
 import com.example.rick_and_morty.core.ui.theme.line_height_20
 import com.example.rick_and_morty.core.ui.theme.padding_10
-import com.example.rick_and_morty.core.ui.theme.padding_3
 import com.example.rick_and_morty.core.ui.theme.padding_7
 import com.example.rick_and_morty.core.ui.theme.rounded12
 import com.example.rick_and_morty.core.ui.theme.size_width_card
 
 @Composable
-fun EpisodeCard(
+fun LocationsCard(
     modifier: Modifier = Modifier,
-    episodeId: Int,
-    episodeName: String,
-    episodeCode: String,
-    episodeRelease: String,
-    onClickNavigateToEpisodeDetail: (episodeId: Int) -> Unit
+    locationId: Int,
+    locationName: String,
+    locationType: String,
+    locationDimension: String,
+    onClickNavigateToLocationsDetail: (Int) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -56,58 +54,44 @@ fun EpisodeCard(
                 horizontal = padding_10
             )
             .clickable {
-                onClickNavigateToEpisodeDetail(episodeId)
+                onClickNavigateToLocationsDetail(locationId)
             },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(padding_3),
-            horizontalAlignment = Alignment.Start
-        ) {
-            Text(
-                text = stringResource(R.string.text_episode),
-                color = MaterialTheme.colorScheme.tertiary,
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.W500,
-                fontSize = font_size_12,
-                lineHeight = line_height_20
-            )
-
-            Text(
-                text = episodeCode,
-                color = MaterialTheme.colorScheme.secondary,
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight.W400,
-                fontSize = font_size_14,
-                lineHeight = line_height_20
-            )
-        }
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(padding_3),
-            horizontalAlignment = Alignment.End
+            verticalArrangement = Arrangement.spacedBy(space = padding_7)
         ) {
             Text(
                 modifier = Modifier
-                    .width(width = size_width_card)
-                    .align(Alignment.End),
-                text = episodeName,
+                    .width(width = size_width_card),
+                text = locationName,
                 color = MaterialTheme.colorScheme.secondary,
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight.W400,
                 fontSize = font_size_16,
-                lineHeight = line_height_20,
-                textAlign = TextAlign.End
+                lineHeight = line_height_20
             )
 
             Text(
-                text = episodeRelease,
+                text = locationType,
+                color = MaterialTheme.colorScheme.secondary,
+                fontFamily = FontFamily.Monospace,
+                fontWeight = FontWeight.W400,
+                fontSize = font_size_16,
+                lineHeight = line_height_20
+            )
+        }
+
+        if (locationDimension != stringResource(R.string.text_character_status_unknown)) {
+            Text(
+                text = locationDimension,
                 color = MaterialTheme.colorScheme.secondary,
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight.W400,
                 fontSize = font_size_14,
-                lineHeight = line_height_20
+                lineHeight = line_height_20,
+                textAlign = TextAlign.End
             )
         }
     }

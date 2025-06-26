@@ -4,10 +4,12 @@ import com.example.rick_and_morty.data.repository.character.CharacterDetailRepos
 import com.example.rick_and_morty.data.repository.characters.CharactersRepositoryImpl
 import com.example.rick_and_morty.data.repository.episode.EpisodeRepositoryImpl
 import com.example.rick_and_morty.data.repository.episodes.EpisodesRepositoryImpl
+import com.example.rick_and_morty.data.repository.locations.LocationsRepositoryImpl
 import com.example.rick_and_morty.domain.repository.character.ICharacterDetailRepository
 import com.example.rick_and_morty.domain.repository.characters.ICharactersRepository
 import com.example.rick_and_morty.domain.repository.episode.IEpisodeRepository
 import com.example.rick_and_morty.domain.repository.episodes.IEpisodesRepository
+import com.example.rick_and_morty.domain.repository.locations.ILocationsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -41,5 +43,11 @@ interface DomainModule {
     fun bindEpisodeRepository(
         impl: EpisodeRepositoryImpl
     ): IEpisodeRepository
+
+    @Binds
+    @Singleton
+    fun bindLocationsRepository(
+        impl: LocationsRepositoryImpl
+    ): ILocationsRepository
     // Repository
 }

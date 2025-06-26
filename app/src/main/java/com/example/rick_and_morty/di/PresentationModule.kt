@@ -10,6 +10,8 @@ import com.example.rick_and_morty.domain.interactor.episode.EpisodeDetailInterac
 import com.example.rick_and_morty.domain.interactor.episode.IEpisodeDetailInteractor
 import com.example.rick_and_morty.domain.interactor.episodes.EpisodesListManagerInteractor
 import com.example.rick_and_morty.domain.interactor.episodes.IEpisodesListManagerInteractor
+import com.example.rick_and_morty.domain.interactor.locations.ILocationsListManagerInteractor
+import com.example.rick_and_morty.domain.interactor.locations.LocationsListManagerInteractor
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -41,4 +43,9 @@ interface PresentationModule {
     fun bindEpisodeDetailInteractor(
         impl: EpisodeDetailInteractor
     ): IEpisodeDetailInteractor
+
+    @Binds
+    fun bindLocationsListManagerInteractor(
+        impl: LocationsListManagerInteractor
+    ): ILocationsListManagerInteractor
 }

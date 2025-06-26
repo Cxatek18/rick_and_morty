@@ -5,6 +5,7 @@ import com.example.rick_and_morty.domain.module.characters.CharacterItemModel
 import com.example.rick_and_morty.domain.module.characters.CharactersResultModel
 import com.example.rick_and_morty.domain.module.episodes.EpisodeItemModel
 import com.example.rick_and_morty.domain.module.episodes.EpisodesResultModel
+import com.example.rick_and_morty.domain.module.locations.LocationsResultModel
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -66,4 +67,16 @@ interface ApiService {
     suspend fun getMultipleCharacter(
         @Path("listCharacterIdToString") listCharacterIdToString: String
     ): Response<List<CharacterItemModel>>
+
+    @GET("location")
+    @Headers(
+        "Accept-Language: ru,en;q=0.9",
+        "Accept: application/json",
+        "Content-Type: application/json"
+    )
+    suspend fun getListLocations(
+        @Query("name") name: String? = null,
+        @Query("type") type: String? = null,
+        @Query("dimension") dimension: String? = null,
+    ): Response<LocationsResultModel>
 }
