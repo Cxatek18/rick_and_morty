@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -26,6 +26,8 @@ import com.example.rick_and_morty.presentation.screens.characters_list.navigatio
 import com.example.rick_and_morty.presentation.screens.episode_detail.navigation.navigateToDetailEpisode
 import com.example.rick_and_morty.presentation.screens.episodes_list.navigation.EpisodesGraph
 import com.example.rick_and_morty.presentation.screens.episodes_list.navigation.listEpisodesGraph
+import com.example.rick_and_morty.presentation.screens.locations_list.navigation.LocationsGraph
+import com.example.rick_and_morty.presentation.screens.locations_list.navigation.listLocationsGraph
 
 @Composable
 fun MainNavHost(
@@ -33,7 +35,7 @@ fun MainNavHost(
 ) {
     val homeLabel = stringResource(R.string.text_bottom_bar_home)
     val episodesLabel = stringResource(R.string.text_bottom_bar_episodes)
-    val searchLabel = stringResource(R.string.text_bottom_bar_search)
+    val locationLabel = stringResource(R.string.text_bottom_bar_location)
 
     val nameTopBarState: MutableState<String> = remember {
         mutableStateOf("")
@@ -61,9 +63,9 @@ fun MainNavHost(
                     bottomNavigationItem = BottomNavigationItem.ListEpisodes
                 ),
                 NavItem(
-                    label = searchLabel,
-                    image = Icons.Default.Search,
-                    contentDescription = searchLabel,
+                    label = locationLabel,
+                    image = Icons.Default.LocationOn,
+                    contentDescription = locationLabel,
                     isSelected = false,
                     bottomNavigationItem = BottomNavigationItem.ListLocation
                 ),
@@ -105,7 +107,11 @@ fun MainNavHost(
                                 }
                             }
 
-                            BottomNavigationItem.ListLocation -> {}
+                            BottomNavigationItem.ListLocation -> {
+                                navController.navigate(LocationsGraph) {
+                                    popUpTo(LocationsGraph) { inclusive = true }
+                                }
+                            }
                         }
                         listNavItem.value = listNavItem.value.switchingTheActiveElement(
                             elementIsActivated = it
@@ -144,6 +150,20 @@ fun MainNavHost(
                 },
                 navigateToDetail = {
                     navController.navigateToDetailEpisode(it)
+                }
+            )
+
+            listLocationsGraph(
+                modifier = Modifier
+                    .padding(paddingValues = paddingValues),
+                changeNameTopBar = { nameTopBar ->
+                    nameTopBarState.value = nameTopBar
+                },
+                changeIsVisibleBackIcon = { isVisible ->
+                    isVisibleNavigateBack.value = isVisible
+                },
+                navigateToDetail = {
+
                 }
             )
         }

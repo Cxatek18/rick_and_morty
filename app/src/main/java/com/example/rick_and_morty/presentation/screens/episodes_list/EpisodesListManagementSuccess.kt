@@ -5,7 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.rick_and_morty.core.ui.components.characters.EpisodeCard
+import com.example.rick_and_morty.core.ui.components.episode.EpisodeCard
 import com.example.rick_and_morty.domain.module.episodes.EpisodeItemModel
 
 @Composable
@@ -17,7 +17,7 @@ fun EpisodesListManagementSuccess(
     LazyColumn(
         modifier = modifier.fillMaxWidth()
     ) {
-        items(episodes) { episode ->
+        items(episodes, key = { it.id }) { episode ->
             EpisodeCard(
                 modifier = Modifier,
                 episodeId = episode.id,

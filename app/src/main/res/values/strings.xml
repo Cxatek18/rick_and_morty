@@ -25,11 +25,12 @@
     <string name="text_top_bar_detail_character">Character Detail</string>
     <string name="text_top_bar_list_episodes">All episodes</string>
     <string name="text_top_bar_detail_episode">Episode Detail</string>
+    <string name="text_top_bar_list_locations">All locations</string>
 
 
     <string name="text_bottom_bar_home">Home</string>
     <string name="text_bottom_bar_episodes">Episodes</string>
-    <string name="text_bottom_bar_search">Search</string>
+    <string name="text_bottom_bar_location">Location</string>
 
 
     <string name="text_character_parameter_location">Last known location</string>
@@ -64,4 +65,11 @@
     <string name="text_episode_air_date">Дата выхода в эфир: %s</string>
     <string name="text_episode_code">Код эпизода: %s</string>
     <string name="text_episode_characters">Персонжи в эпизоде:</string>
+
+    <string name="text_search_to_name_location">Поиск по названию локации</string>
+    <string name="placeholder_et_search_name_location">Search to name location</string>
+    <string name="text_search_to_type_location">Поиск по типу локации</string>
+    <string name="placeholder_et_search_type_location">Search to type location</string>
+    <string name="text_search_to_dimension_location">Поиск по названию измерения локации</string>
+    <string name="placeholder_et_search_dimension_location">Search to name dimension location</string>
 </resources>
