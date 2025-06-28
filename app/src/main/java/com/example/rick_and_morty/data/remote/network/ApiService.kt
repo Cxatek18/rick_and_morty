@@ -48,6 +48,7 @@ interface ApiService {
     suspend fun getListEpisodes(
         @Query("name") name: String? = null,
         @Query("episode") episode: String? = null,
+        @Query("page") page: Int = 1
     ): Response<EpisodesResultModel>
 
     @GET("episode/{episodeId}")
