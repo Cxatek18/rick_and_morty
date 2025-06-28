@@ -1,13 +1,12 @@
 package com.example.rick_and_morty.data.repository.episodes
 
-import com.example.rick_and_morty.data.remote.error_handler.mapOnSuccess
-import com.example.rick_and_morty.data.remote.error_handler.safeApiCall
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.rick_and_morty.data.remote.network.ApiService
-import com.example.rick_and_morty.domain.module.episodes.EpisodesResultModel
-import com.example.rick_and_morty.domain.module.error_handler.ApiResult
+import com.example.rick_and_morty.domain.module.episodes.EpisodeItemModel
 import com.example.rick_and_morty.domain.repository.episodes.IEpisodesRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class EpisodesRepositoryImpl @Inject constructor(
@@ -17,20 +16,20 @@ class EpisodesRepositoryImpl @Inject constructor(
     override fun getAllEpisodes(
         nameEpisode: String?,
         episodeCode: String?
-    ): Flow<ApiResult<EpisodesResultModel>> = flow {
-        emit(
-            safeApiCall {
-                apiService.getListEpisodes(
-                    name = nameEpisode,
-                    episode = episodeCode,
+    ): Flow<PagingData<EpisodeItemModel>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                prefetchDistance = 5,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                EpisodeDataSource(
+                    apiService,
+                    nameEpisode,
+                    episodeCode
                 )
             }
-                .mapOnSuccess { response ->
-                    EpisodesResultModel(
-                        info = response.info,
-                        results = response.results
-                    )
-                }
-        )
+        ).flow
     }
 }

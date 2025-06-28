@@ -2,11 +2,10 @@ package com.example.rick_and_morty.presentation.screens.episodes_list.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.example.rick_and_morty.R
 import com.example.rick_and_morty.core.ui.utils.IResourceService
 import com.example.rick_and_morty.domain.interactor.episodes.IEpisodesListManagerInteractor
-import com.example.rick_and_morty.domain.module.error_handler.ApiResult
-import com.example.rick_and_morty.domain.module.error_handler.getStringSystemError
 import com.example.rick_and_morty.presentation.screens.episodes_list.state.EpisodesListManagementState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -53,37 +53,21 @@ class EpisodesListManagementViewModel @Inject constructor(
                     )
                 }
                 .collect { result ->
-                    when (result) {
-                        is ApiResult.Error -> {
-                            val systemErrorText = result.type.getStringSystemError(resolver)
-                            if (systemErrorText != resolver.getString(R.string.text_error_in_server)) {
-                                _state.value = EpisodesListManagementState.Error(
-                                    errorText = systemErrorText,
+                    if (_state.value::class.java != EpisodesListManagementState.Success::class.java) {
+                        _state.value = EpisodesListManagementState.Success(
+                            episodes = flowOf(result).cachedIn(viewModelScope)
+                        )
+                    } else {
+                        when (_state.value) {
+                            is EpisodesListManagementState.Error, EpisodesListManagementState.Loading -> {}
+                            is EpisodesListManagementState.Success -> {
+                                val currentState =
+                                    _state.value as EpisodesListManagementState.Success
+                                val updateState = currentState.copy(
+                                    episodes = flowOf(result).cachedIn(viewModelScope),
                                     isRefreshing = false
                                 )
-                            }
-                        }
-
-                        is ApiResult.Success -> {
-                            if (_state.value::class.java != EpisodesListManagementState.Success::class.java) {
-                                _state.value = EpisodesListManagementState.Success(
-                                    episodes = result.data.results,
-                                    info = result.data.info,
-                                )
-                            } else {
-                                when (_state.value) {
-                                    is EpisodesListManagementState.Error, EpisodesListManagementState.Loading -> {}
-                                    is EpisodesListManagementState.Success -> {
-                                        val currentState =
-                                            _state.value as EpisodesListManagementState.Success
-                                        val updateState = currentState.copy(
-                                            episodes = result.data.results,
-                                            info = result.data.info,
-                                            isRefreshing = false
-                                        )
-                                        _state.value = updateState
-                                    }
-                                }
+                                _state.value = updateState
                             }
                         }
                     }
