@@ -1,7 +1,7 @@
 package com.example.rick_and_morty.domain.interactor.locations
 
-import com.example.rick_and_morty.domain.module.error_handler.ApiResult
-import com.example.rick_and_morty.domain.module.locations.LocationsResultModel
+import androidx.paging.PagingData
+import com.example.rick_and_morty.domain.module.locations.LocationItemModel
 import com.example.rick_and_morty.domain.repository.locations.ILocationsRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -13,7 +13,7 @@ class LocationsListManagerInteractor @Inject constructor(
         nameLocation: String?,
         typeLocation: String?,
         dimensionLocation: String?
-    ): Flow<ApiResult<LocationsResultModel>> {
+    ): Flow<PagingData<LocationItemModel>> {
         return repository.getAllLocations(
             nameLocation = nameLocation,
             typeLocation = typeLocation,

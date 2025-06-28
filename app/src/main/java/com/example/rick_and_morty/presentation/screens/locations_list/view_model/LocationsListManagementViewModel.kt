@@ -2,11 +2,10 @@ package com.example.rick_and_morty.presentation.screens.locations_list.view_mode
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.example.rick_and_morty.R
 import com.example.rick_and_morty.core.ui.utils.IResourceService
 import com.example.rick_and_morty.domain.interactor.locations.ILocationsListManagerInteractor
-import com.example.rick_and_morty.domain.module.error_handler.ApiResult
-import com.example.rick_and_morty.domain.module.error_handler.getStringSystemError
 import com.example.rick_and_morty.presentation.screens.locations_list.state.LocationsListManagementState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -55,37 +55,21 @@ class LocationsListManagementViewModel @Inject constructor(
                     )
                 }
                 .collect { result ->
-                    when (result) {
-                        is ApiResult.Error -> {
-                            val systemErrorText = result.type.getStringSystemError(resolver)
-                            if (systemErrorText != resolver.getString(R.string.text_error_in_server)) {
-                                _state.value = LocationsListManagementState.Error(
-                                    errorText = systemErrorText,
+                    if (_state.value::class.java != LocationsListManagementState.Success::class.java) {
+                        _state.value = LocationsListManagementState.Success(
+                            locations = flowOf(result).cachedIn(viewModelScope)
+                        )
+                    } else {
+                        when (_state.value) {
+                            is LocationsListManagementState.Error, LocationsListManagementState.Loading -> {}
+                            is LocationsListManagementState.Success -> {
+                                val currentState =
+                                    _state.value as LocationsListManagementState.Success
+                                val updateState = currentState.copy(
+                                    locations = flowOf(result).cachedIn(viewModelScope),
                                     isRefreshing = false
                                 )
-                            }
-                        }
-
-                        is ApiResult.Success -> {
-                            if (_state.value::class.java != LocationsListManagementState.Success::class.java) {
-                                _state.value = LocationsListManagementState.Success(
-                                    locations = result.data.results,
-                                    info = result.data.info,
-                                )
-                            } else {
-                                when (_state.value) {
-                                    is LocationsListManagementState.Error, LocationsListManagementState.Loading -> {}
-                                    is LocationsListManagementState.Success -> {
-                                        val currentState =
-                                            _state.value as LocationsListManagementState.Success
-                                        val updateState = currentState.copy(
-                                            locations = result.data.results,
-                                            info = result.data.info,
-                                            isRefreshing = false
-                                        )
-                                        _state.value = updateState
-                                    }
-                                }
+                                _state.value = updateState
                             }
                         }
                     }

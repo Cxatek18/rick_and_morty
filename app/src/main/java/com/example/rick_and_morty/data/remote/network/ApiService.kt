@@ -81,6 +81,7 @@ interface ApiService {
         @Query("name") name: String? = null,
         @Query("type") type: String? = null,
         @Query("dimension") dimension: String? = null,
+        @Query("page") page: Int = 1
     ): Response<LocationsResultModel>
 
     @GET("location/{locationId}")

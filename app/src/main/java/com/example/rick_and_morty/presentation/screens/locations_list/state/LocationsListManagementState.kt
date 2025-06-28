@@ -1,15 +1,15 @@
 package com.example.rick_and_morty.presentation.screens.locations_list.state
 
-import com.example.rick_and_morty.domain.module.episodes.InfoModel
+import androidx.paging.PagingData
 import com.example.rick_and_morty.domain.module.locations.LocationItemModel
+import kotlinx.coroutines.flow.Flow
 
 sealed interface LocationsListManagementState {
 
     data object Loading : LocationsListManagementState
 
     data class Success(
-        val locations: List<LocationItemModel>,
-        val info: InfoModel,
+        val locations: Flow<PagingData<LocationItemModel>>,
         val textNameSearchLocation: String? = null,
         val textTypeLocationSearch: String? = null,
         val textDimensionLocationSearch: String? = null,
