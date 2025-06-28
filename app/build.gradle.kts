@@ -127,4 +127,7 @@ dependencies {
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.navigation.testing)
+
+    implementation(libs.androidx.paging.runtime.ktx)
+    implementation(libs.androidx.paging.compose)
 }

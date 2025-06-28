@@ -26,6 +26,7 @@ interface ApiService {
         @Query("species") species: String? = null,
         @Query("type") type: String? = null,
         @Query("gender") gender: String? = null,
+        @Query("page") page: Int = 1
     ): Response<CharactersResultModel>
 
     @GET("character/{characterId}")
