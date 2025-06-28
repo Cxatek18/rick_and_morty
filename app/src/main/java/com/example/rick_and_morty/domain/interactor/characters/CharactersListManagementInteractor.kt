@@ -1,10 +1,10 @@
 package com.example.rick_and_morty.domain.interactor.characters
 
-import com.example.rick_and_morty.domain.module.characters.CharactersResultModel
+import androidx.paging.PagingData
+import com.example.rick_and_morty.domain.module.characters.CharacterItemModel
 import com.example.rick_and_morty.domain.module.characters.GenderCharacterFilterModel
 import com.example.rick_and_morty.domain.module.characters.SpeciesCharacterFilterModel
 import com.example.rick_and_morty.domain.module.characters.StatusCharacterFilterModel
-import com.example.rick_and_morty.domain.module.error_handler.ApiResult
 import com.example.rick_and_morty.domain.repository.characters.ICharactersRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -13,14 +13,14 @@ class CharactersListManagementInteractor @Inject constructor(
     private val repository: ICharactersRepository
 ) : ICharactersListManagementInteractor {
 
-    override fun getListAllCharacters(
+    override fun getCharactersPaging(
         nameQuery: String?,
         statusQuery: StatusCharacterFilterModel?,
         speciesQuery: SpeciesCharacterFilterModel?,
         typeQuery: String?,
         genderQuery: GenderCharacterFilterModel?
-    ): Flow<ApiResult<CharactersResultModel>> {
-        return repository.getListAllCharacters(
+    ): Flow<PagingData<CharacterItemModel>> {
+        return repository.getCharactersPaging(
             nameQuery = nameQuery,
             statusQuery = statusQuery,
             speciesQuery = speciesQuery,
