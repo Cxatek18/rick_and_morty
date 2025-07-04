@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -54,6 +55,7 @@ fun CharacterDetailManagementSuccessScreen(
 
     Column(
         modifier = modifier
+            .testTag("CharacterDetailColumnScrolled")
             .fillMaxSize()
             .verticalScroll(state = scrollState)
             .padding(
@@ -74,6 +76,8 @@ fun CharacterDetailManagementSuccessScreen(
             }
         }
 
+        val statusCharacterText = character.status ?: stringResource(R.string.text_error_null_type)
+
         Box(
             modifier = Modifier
                 .clip(
@@ -87,10 +91,8 @@ fun CharacterDetailManagementSuccessScreen(
                 .padding(vertical = padding_3, horizontal = padding_16)
         ) {
             Text(
-                text = String.format(
-                    stringResource(R.string.text_error_null_type),
-                    character.status
-                ),
+                modifier = Modifier.testTag("CharacterDetailStatus"),
+                text = statusCharacterText,
                 color = MaterialTheme.colorScheme.secondary,
                 fontSize = font_size_12,
                 fontWeight = FontWeight.W400,
@@ -101,6 +103,7 @@ fun CharacterDetailManagementSuccessScreen(
         Spacer(modifier = Modifier.height(height = size_10))
 
         Text(
+            modifier = Modifier.testTag("CharacterDetailName"),
             text = character.name,
             color = MaterialTheme.colorScheme.tertiary,
             fontFamily = FontFamily.Monospace,
@@ -115,6 +118,7 @@ fun CharacterDetailManagementSuccessScreen(
 
         AsyncImage(
             modifier = Modifier
+                .testTag("CharacterDetailImage")
                 .fillMaxWidth()
                 .height(height = size_height_character_image),
             model = character.image,
@@ -169,7 +173,9 @@ fun CharacterDetailManagementSuccessScreen(
         Spacer(modifier = Modifier.height(height = padding_20))
 
         ButtonDetailCharacter(
-            modifier = Modifier.padding(horizontal = padding_36),
+            modifier = Modifier
+                .testTag("CharacterDetailBtnViewAllEpisodes")
+                .padding(horizontal = padding_36),
             textButton = stringResource(R.string.text_btn_view_all_episodes),
             onClick = onClickBtnViewAllEpisodes
         )
