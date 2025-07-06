@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.min
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -37,6 +38,8 @@ fun CharactersListManagementSuccessScreen(
                 val character = lazyPagingItems[number]
                 if (character != null) {
                     CharactersCard(
+                        modifier = Modifier
+                            .testTag("CharactersCard_${character.id}"),
                         characterID = character.id,
                         imageCharacter = character.image,
                         nameCharacter = character.name,

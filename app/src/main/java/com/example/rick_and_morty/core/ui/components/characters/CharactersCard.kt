@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +49,7 @@ fun CharactersCard(
 ) {
     Column(
         modifier = modifier
+            .testTag("CharactersCardColumn")
             .size(width = size_width_card, height = size_height_card)
             .padding(vertical = padding_10, horizontal = padding_10)
             .background(
@@ -79,6 +81,7 @@ fun CharactersCard(
         ) {
             AsyncImage(
                 modifier = Modifier
+                    .testTag("CharactersCardImage")
                     .fillMaxWidth()
                     .height(height = size_height_card_image),
                 model = imageCharacter,
@@ -111,6 +114,7 @@ fun CharactersCard(
 
         Text(
             modifier = Modifier
+                .testTag("CharactersCardName")
                 .padding(top = padding_10)
                 .fillMaxWidth()
                 .padding(horizontal = padding_7),
